@@ -244,7 +244,7 @@ const faqs = [
   },
   {
     q: "How much does it cost to advertise on an auto?",
-    a: "Our launch offers start from just ₹1,299 for 5 days on 2 autos, and ₹1,499 for 7 days on 3 autos. Banner design, printing, and installation are completely FREE for launch offers. After your trial, you can scale to any number of autos for 28-day campaigns.",
+    a: "Our launch offers start from just ₹1,299 for 5 days on 2 autos, and ₹1,499 for 7 days on 3 autos. Banner printing, and installation are completely FREE for launch offers. After your trial, you can scale to any number of autos for 28-day campaigns.",
   },
   {
     q: "Is banner printing and installation really free?",
@@ -331,12 +331,8 @@ export default function Home() {
             className="mt-6 text-gray-300 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
           >
             Reach thousands of people daily with moving auto advertisements. Run
-            targeted campaigns in areas like{" "}
-            <span className="text-white font-medium">
-              Peenya, Yeshwanthpur, Rajajinagar
-            </span>{" "}
-            and nearby localities at affordable prices with real-time NFC &amp;
-            QR code tracking.
+            targeted campaigns in busy areas and localities at affordable prices
+            with real-time NFC &amp; QR code tracking.
           </motion.p>
 
           <motion.div

@@ -120,7 +120,7 @@ const process = [
   {
     icon: <FiTruck size={20} />,
     title: "Auto Onboarding",
-    desc: "We partner with auto drivers in your chosen area, sign agreements and install your banner on their vehicles.",
+    desc: "I partner with auto drivers, agreements and install your banner on their vehicles.",
   },
   {
     icon: <MdNearMe size={20} />,
@@ -501,30 +501,19 @@ export default function Services() {
             variants={stagger}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8"
           >
-            {[
-              "Peenya",
-              "Yeshwanthpur",
-              "Rajajinagar",
-              "Malleshwaram",
-              "Majestic",
-              "KR Market",
-              "Jayanagar",
-              "JP Nagar",
-              "BTM Layout",
-              "HSR Layout",
-              "Whitefield",
-              "Electronic City",
-            ].map((area, i) => (
-              <motion.div
-                key={area}
-                variants={fadeUp}
-                custom={i}
-                className="card text-center py-4 px-3 group hover:border-brand-500/50 hover:bg-dark-700 transition-all duration-300 cursor-default"
-              >
-                <FiMapPin className="text-brand-400 mx-auto mb-2" size={18} />
-                <p className="text-white font-semibold text-sm">{area}</p>
-              </motion.div>
-            ))}
+            {["Peenya", "Yeshwanthpur", "Rajajinagar", "BEL", "Jalahalli"].map(
+              (area, i) => (
+                <motion.div
+                  key={area}
+                  variants={fadeUp}
+                  custom={i}
+                  className="card text-center py-4 px-3 group hover:border-brand-500/50 hover:bg-dark-700 transition-all duration-300 cursor-default"
+                >
+                  <FiMapPin className="text-brand-400 mx-auto mb-2" size={18} />
+                  <p className="text-white font-semibold text-sm">{area}</p>
+                </motion.div>
+              ),
+            )}
           </motion.div>
 
           <motion.p

@@ -197,8 +197,8 @@ export default function Subscribe() {
             </h1>
             <p className="section-sub">
               Fill in your business details to lock in an exclusive launch
-              offer. Banner design, printing &amp; installation are completely
-              FREE for first-time subscribers.
+              offer. Banner printing &amp; installation are completely FREE for
+              first-time subscribers.
             </p>
           </motion.div>
 
@@ -544,7 +544,7 @@ export default function Subscribe() {
                 </p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300">
                   {[
-                    "Banner design, print & installation — FREE",
+                    "Banner print & installation — FREE",
                     "NFC tap tracking on each auto",
                     "QR code for passer-by engagement",
                     "Daily WhatsApp & SMS notifications",
