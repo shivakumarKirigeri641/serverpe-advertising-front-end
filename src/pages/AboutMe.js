@@ -344,8 +344,8 @@ export default function AboutMe() {
               </p>
               <p>
                 The advertising initiative —{" "}
-                <span className="text-white font-semibold">ServerPE™ Ads</span>{" "}
-                — focuses specifically on{" "}
+                <span className="text-white font-semibold">ServerPE™</span> —
+                focuses specifically on{" "}
                 <span className="text-brand-400 font-medium">
                   hyperlocal, on-vehicle outdoor advertising
                 </span>

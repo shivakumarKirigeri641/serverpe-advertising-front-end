@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  FiCheck,
   FiPrinter,
   FiTruck,
   FiBarChart2,
@@ -26,57 +25,6 @@ const stagger = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.1 } },
 };
-
-const packages = [
-  {
-    name: "Launch Offer 1",
-    price: "₹1,499",
-    duration: "7 Days",
-    autos: 3,
-    badge: "Popular",
-    accent: true,
-    perks: [
-      "3 autos covering your city",
-      "Provide your design image — printing & installation FREE",
-      "NFC live tracking on each auto",
-      "QR code on banner for crowd engagement",
-      "Daily banner photo proof",
-      "SMS & WhatsApp notifications daily",
-    ],
-  },
-  {
-    name: "Launch Offer 2",
-    price: "₹1,299",
-    duration: "5 Days",
-    autos: 2,
-    badge: null,
-    accent: false,
-    perks: [
-      "2 autos deployed in your area",
-      "Provide your design image — printing & installation FREE",
-      "NFC live tracking per auto",
-      "QR code on banner for crowd engagement",
-      "Daily banner photo proof",
-      "SMS & WhatsApp notifications daily",
-    ],
-  },
-  {
-    name: "Post-Launch Scale",
-    price: "Custom",
-    duration: "28 Days",
-    autos: "Any",
-    badge: "Build Trust First",
-    accent: false,
-    perks: [
-      "Any number of autos across the city",
-      "Custom pricing based on scale",
-      "Full NFC & QR tracking suite",
-      "Dedicated daily updates",
-      "Priority onboarding",
-      "City-wide coverage planning",
-    ],
-  },
-];
 
 const trackingFeatures = [
   {
@@ -260,113 +208,32 @@ export default function Services() {
         </div>
       </section>
 
-      {/* ═══ PRICING PACKAGES ══════════════════════════════════════ */}
-      <section className="py-20 px-4 bg-dark-800/50 relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-[0.03]"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1920&q=80')",
-          }}
-        />
-        <div className="absolute inset-0 bg-dark-800/90 pointer-events-none" />
-        <div className="max-w-6xl mx-auto relative z-10">
+      {/* ═══ PRICING LINK ══════════════════════════════════════════ */}
+      <section className="py-14 px-4 bg-dark-800/50">
+        <div className="max-w-3xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="text-center mb-4"
+            className="card border-brand-500/30 border-dashed border-2 text-center"
           >
-            <p className="text-brand-400 font-semibold uppercase tracking-widest text-sm mb-2">
-              Affordable Outdoor Advertising Packages
+            <p className="text-brand-400 font-semibold text-sm uppercase tracking-widest mb-2">
+              Pricing
             </p>
-            <h2 className="section-heading">
-              Auto Advertising Pricing in Bengaluru
-            </h2>
-          </motion.div>
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="text-center section-sub mb-12"
-          >
-            All launch offers include completely FREE banner design, printing
-            &amp; installation. The most cost-effective outdoor advertising for
-            small businesses.
-          </motion.p>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {packages.map((pkg, i) => (
-              <motion.div
-                key={i}
-                variants={fadeUp}
-                custom={i}
-                className={`relative card flex flex-col border-2 ${
-                  pkg.accent
-                    ? "border-brand-500 shadow-2xl shadow-brand-500/20"
-                    : "border-dark-600 hover:border-brand-500/40"
-                } transition-all duration-300`}
-              >
-                {pkg.badge && (
-                  <div
-                    className={`absolute -top-3 right-5 text-xs font-bold px-3 py-1 rounded-full ${
-                      pkg.accent
-                        ? "bg-brand-500 text-white"
-                        : "bg-dark-600 text-brand-400 border border-brand-500/30"
-                    }`}
-                  >
-                    {pkg.badge}
-                  </div>
-                )}
-                <div className="mb-5">
-                  <p className="text-gray-400 text-sm font-medium mb-1">
-                    {pkg.name}
-                  </p>
-                  <p className="text-4xl font-extrabold text-white">
-                    {pkg.price}
-                    <span className="text-gray-500 text-sm font-normal ml-1">
-                      / {pkg.duration}
-                    </span>
-                  </p>
-                  <p className="text-brand-400 text-sm font-semibold mt-1">
-                    {pkg.autos === "Any"
-                      ? "Flexible number of autos"
-                      : `${pkg.autos} autos deployed`}
-                  </p>
-                </div>
-
-                <ul className="space-y-3 flex-1 mb-6">
-                  {pkg.perks.map((perk, j) => (
-                    <li
-                      key={j}
-                      className="flex items-start gap-2.5 text-sm text-gray-300"
-                    >
-                      <FiCheck className="text-brand-400 mt-0.5 shrink-0" />
-                      {perk}
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  onClick={() => navigate(i < 2 ? "/subscribe" : "/contact")}
-                  className={
-                    pkg.accent
-                      ? "btn-primary w-full text-center"
-                      : "btn-outline w-full text-center"
-                  }
-                >
-                  {i < 2 ? "Subscribe Now" : "Get in Touch"}
-                </button>
-              </motion.div>
-            ))}
+            <h3 className="text-white font-bold text-xl mb-2">
+              Per Auto. Per Week. Zero Surprises.
+            </h3>
+            <p className="text-gray-400 text-sm mb-5">
+              Plans start from ₹999/auto/week. Choose between NFC tracked and
+              non-NFC options with SMS or WhatsApp notifications.
+            </p>
+            <button
+              onClick={() => navigate("/pricing")}
+              className="btn-primary"
+            >
+              View Full Pricing →
+            </button>
           </motion.div>
         </div>
       </section>

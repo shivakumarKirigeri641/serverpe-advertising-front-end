@@ -10,6 +10,9 @@ import Services from "./pages/Services";
 import AboutMe from "./pages/AboutMe";
 import ContactMe from "./pages/ContactMe";
 import Subscribe from "./pages/Subscribe";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Pricing from "./pages/Pricing";
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
             <Route path="/about" element={<AboutMe />} />
             <Route path="/contact" element={<ContactMe />} />
             <Route path="/subscribe" element={<Subscribe />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/pricing" element={<Pricing />} />
             {/* Fallback redirect */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

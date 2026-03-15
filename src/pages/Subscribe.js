@@ -210,8 +210,8 @@ export default function Subscribe() {
             className="grid grid-cols-2 gap-4 max-w-lg mx-auto mt-8"
           >
             {[
-              { label: "Launch Offer 1", detail: "3 Autos · 7 Days · ₹1,499" },
-              { label: "Launch Offer 2", detail: "2 Autos · 5 Days · ₹1,299" },
+              { label: "Launch Offer 1", detail: "3 Autos · 7 Days · ₹1,999" },
+              { label: "Launch Offer 2", detail: "2 Autos · 5 Days · ₹1,799" },
             ].map((o, i) => (
               <div
                 key={i}
@@ -225,6 +225,32 @@ export default function Subscribe() {
                 </p>
               </div>
             ))}
+          </motion.div>
+
+          {/* First 5 businesses early-bird notice */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="max-w-lg mx-auto mt-5"
+          >
+            <div className="relative card border-2 border-yellow-500/60 bg-yellow-500/5 text-center py-4 px-5 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-brand-400 to-yellow-500" />
+              <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest">
+                🔥 Early Bird — First 5 Businesses Only
+              </p>
+              <p className="text-white text-sm font-semibold mt-1">
+                Get <span className="text-yellow-400">₹200 off</span> any launch
+                offer
+              </p>
+              <div className="flex justify-center gap-6 mt-2 text-xs">
+                <span className="text-gray-500 line-through">₹2,199</span>
+                <span className="text-white font-bold">₹1,999</span>
+                <span className="text-gray-400">·</span>
+                <span className="text-gray-500 line-through">₹1,999</span>
+                <span className="text-white font-bold">₹1,799</span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>
@@ -572,7 +598,7 @@ export default function Subscribe() {
               </motion.button>
               <p className="text-gray-500 text-xs text-center mt-3">
                 By subscribing you agree to be contacted about your advertising
-                campaign. No spam — ever.
+                campaign, privacy policy with terms & conditions.
               </p>
             </motion.div>
           </motion.form>

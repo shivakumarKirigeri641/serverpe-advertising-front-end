@@ -52,9 +52,12 @@ export default function Footer() {
               {[
                 { label: "Home", to: "/" },
                 { label: "Services", to: "/services" },
+                { label: "Pricing", to: "/pricing" },
                 { label: "About Me", to: "/about" },
                 { label: "Contact Me", to: "/contact" },
                 { label: "Get Launch Offer", to: "/subscribe" },
+                { label: "Privacy Policy", to: "/privacy" },
+                { label: "Terms & Conditions", to: "/terms" },
               ].map((link) => (
                 <li key={link.to}>
                   <NavLink

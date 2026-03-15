@@ -244,7 +244,7 @@ const faqs = [
   },
   {
     q: "How much does it cost to advertise on an auto?",
-    a: "Our launch offers start from just ₹1,299 for 5 days on 2 autos, and ₹1,499 for 7 days on 3 autos. Banner printing, and installation are completely FREE for launch offers. After your trial, you can scale to any number of autos for 28-day campaigns.",
+    a: "Our launch offers start from just ₹1,799 for 5 days on 2 autos, and ₹1,999 for 7 days on 3 autos. Banner printing, and installation are completely FREE for launch offers. After your trial, you can scale to any number of autos for 28-day campaigns.",
   },
   {
     q: "Is banner printing and installation really free?",
@@ -575,6 +575,49 @@ export default function Home() {
           <motion.div
             initial="hidden"
             whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="mb-8 max-w-3xl mx-auto"
+          >
+            <div className="relative card border-2 border-yellow-500/60 bg-yellow-500/5 text-center py-5 px-6 overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-500 via-brand-400 to-yellow-500" />
+              <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-1">
+                🔥 Early Bird Exclusive
+              </p>
+              <p className="text-white font-extrabold text-xl">
+                First 5 Businesses Only — ₹200 Off!
+              </p>
+              <p className="text-gray-300 text-sm mt-2 leading-relaxed">
+                Opt for any launch offer &amp; pay{" "}
+                <span className="text-yellow-400 font-semibold">₹200 less</span>{" "}
+                than the listed price. Limited to the first 5 sign-ups only!
+              </p>
+              <div className="flex justify-center gap-8 mt-3">
+                <div>
+                  <p className="text-gray-500 text-xs line-through">₹2,199</p>
+                  <p className="text-white font-bold">
+                    ₹1,999{" "}
+                    <span className="text-brand-400 text-xs">Offer 1</span>
+                  </p>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-xs line-through">₹1,999</p>
+                  <p className="text-white font-bold">
+                    ₹1,799{" "}
+                    <span className="text-brand-400 text-xs">Offer 2</span>
+                  </p>
+                </div>
+              </div>
+              <p className="mt-3 text-xs text-gray-500 italic">
+                * Discount applied at the time of booking confirmation with
+                Shivakumar directly.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={stagger}
             className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto"
@@ -582,14 +625,14 @@ export default function Home() {
             <OfferCard
               badge="Launch Offer 1"
               title="Best for quick city trial"
-              price="1,499"
+              price="1,999"
               duration="7 days"
               autos={3}
             />
             <OfferCard
               badge="Launch Offer 2"
               title="Perfect starter pack"
-              price="1,299"
+              price="1,799"
               duration="5 days"
               autos={2}
               accent
@@ -703,7 +746,7 @@ export default function Home() {
               {
                 icon: <FiDollarSign size={22} />,
                 title: "Affordable for Local Businesses",
-                desc: "Starting from just ₹1,299 with free printing (you provide design). The most cost-effective outdoor advertising for shops, gyms, and restaurants.",
+                desc: "Starting from just ₹1,799 with free printing (you provide design). The most cost-effective outdoor advertising for shops, gyms, and restaurants.",
               },
               {
                 icon: <FiTrendingUp size={22} />,
@@ -741,7 +784,7 @@ export default function Home() {
             variants={fadeUp}
             className="text-center mb-14"
           >
-            <h2 className="section-heading">Why Choose ServerPE™ Ads</h2>
+            <h2 className="section-heading">Why Choose ServerPE™</h2>
             <p className="section-sub">
               Not an agency. Not a competitor. A real individual initiative
               dedicated to results and complete transparency.
