@@ -30,7 +30,7 @@ const trackingFeatures = [
   {
     icon: <MdNearMe size={26} />,
     title: "NFC Tap Tracking",
-    desc: "Each auto has an NFC tag. Every time the driver taps it, you get an instant notification confirming your banner is live and moving.",
+    desc: "Each creative road ad has an NFC tag. Every time the driver taps it, you get an instant notification confirming your ad is live and moving.",
   },
   {
     icon: <MdQrCode2 size={26} />,
@@ -40,7 +40,7 @@ const trackingFeatures = [
   {
     icon: <FiCamera size={26} />,
     title: "Daily Photo Proof",
-    desc: "Auto drivers upload a daily photo of your banner live on their vehicle — because seeing is believing.",
+    desc: "Drivers upload a daily photo of your creative road ad live and running — because seeing is believing.",
   },
   {
     icon: <TbBrandWhatsapp size={26} />,
@@ -63,12 +63,12 @@ const process = [
   {
     icon: <FiPrinter size={20} />,
     title: "You Provide Your Design Image",
-    desc: "Share your ready design image — I handle the rest. I print it sized for auto-behind banner dimensions, laminate, and prep for installation.",
+    desc: "Share your ready design image — I handle the rest. I print it sized for compact road-ad dimensions, laminate, and prep for installation.",
   },
   {
     icon: <FiTruck size={20} />,
-    title: "Auto Onboarding",
-    desc: "I partner with auto drivers, agreements and install your banner on their vehicles.",
+    title: "Driver Onboarding",
+    desc: "I partner with road drivers, get agreements and install your creative ad on their route.",
   },
   {
     icon: <MdNearMe size={20} />,
@@ -78,7 +78,7 @@ const process = [
   {
     icon: <FiBell size={20} />,
     title: "Go Live & Track",
-    desc: "Your campaign activates. Notifications flow in via SMS & WhatsApp in real time as autos hit the road.",
+    desc: "Your campaign activates. Notifications flow in via SMS & WhatsApp in real time as your creative ads go live on the road.",
   },
 ];
 
@@ -96,7 +96,7 @@ const serviceHighlights = [
   {
     icon: <FiCamera size={20} />,
     title: "Daily Visual Proof",
-    desc: "Auto drivers upload daily photos of your live banner — you never wonder if your ad is running.",
+    desc: "Drivers upload daily photos of your live creative road ad — you never wonder if your ad is running.",
   },
 ];
 
@@ -130,7 +130,7 @@ export default function Services() {
               <span className="text-brand-400">Bengaluru</span>
             </h1>
             <p className="section-sub mt-5 max-w-3xl mx-auto">
-              Auto rickshaw advertising that moves your brand through busy
+              On-movement advertising that moves your brand through busy
               markets, traffic junctions, and residential neighbourhoods across
               Bengaluru — with real-time NFC &amp; QR code tracking at
               unbeatable launch prices.
@@ -150,11 +150,12 @@ export default function Services() {
             className="text-center mb-14"
           >
             <h2 className="section-heading">
-              What Our Auto Advertising Service Includes
+              What Our Ads on Movement Service Includes
             </h2>
             <p className="section-sub">
-              You provide the design image — I handle printing to auto-behind
-              dimensions, installation, and end-to-end campaign tracking.
+              You provide the design image — I handle printing to compact
+              road-ad dimensions, installation, and end-to-end campaign
+              tracking.
             </p>
           </motion.div>
 
@@ -221,11 +222,11 @@ export default function Services() {
             <p className="text-brand-400 font-semibold text-sm uppercase tracking-widest mb-2">
               Pricing
             </p>
-            <h3 className="text-white font-bold text-xl mb-2">
-              Per Auto. Per Week. Zero Surprises.
+            <h3 className="text-white font-bold mb-1">
+              Per Ad on Road. Per Week. Zero Surprises.
             </h3>
             <p className="text-gray-400 text-sm mb-5">
-              Plans start from ₹999/auto/week. Choose between NFC tracked and
+              Plans start from ₹999/ad/week. Choose between NFC tracked and
               non-NFC options with SMS or WhatsApp notifications.
             </p>
             <button
@@ -249,7 +250,7 @@ export default function Services() {
             className="text-center mb-14"
           >
             <h2 className="section-heading">
-              Real-Time Auto Advertising Tracking
+              Real-Time Ads on Movement Tracking
             </h2>
             <p className="section-sub">
               Every rupee you spend is accountable. NFC tracking, QR code
@@ -304,7 +305,7 @@ export default function Services() {
             className="text-center mb-14"
           >
             <h2 className="section-heading">
-              How Your Auto Advertising Campaign Runs
+              How Your Ads on Movement Campaign Runs
             </h2>
             <p className="section-sub">
               Simple four-step process from design submission to city-wide
@@ -353,11 +354,11 @@ export default function Services() {
             className="text-center mb-14"
           >
             <h2 className="section-heading">
-              Auto Advertising Coverage Areas in Bengaluru
+              Ads on Movement Coverage Areas in Bengaluru
             </h2>
             <p className="section-sub">
-              Our autos operate in high-traffic business districts, residential
-              neighbourhoods, and market areas across the city.
+              Our creative road ads operate in high-traffic business districts,
+              residential neighbourhoods, and market areas across the city.
             </p>
           </motion.div>
 
@@ -413,12 +414,12 @@ export default function Services() {
           >
             <span className="text-5xl mb-4 block">🛺</span>
             <h3 className="text-xl font-bold text-white mb-3">
-              Currently Operational: Auto Rickshaw Advertising
+              Currently Operational: Ads on Movement
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed max-w-xl mx-auto">
-              Auto rickshaws are my first operational medium — they move through
-              dense city lanes, high-traffic areas, and local neighbourhoods
-              quickly, giving your business banner maximum visibility at the
+              Creative road ads are my first operational medium — they move
+              through dense city lanes, high-traffic areas, and local
+              neighbourhoods, giving your business ad maximum visibility at the
               ground level across Bengaluru.
             </p>
           </motion.div>
@@ -445,7 +446,7 @@ export default function Services() {
             <div className="absolute inset-0 bg-gradient-to-br from-brand-600/95 to-brand-800/95" />
             <div className="relative z-10 p-10 md:p-14 text-center">
               <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-                Start Your Auto Advertising Campaign Today
+                Start Your Ads on Movement Campaign Today
               </h2>
               <p className="text-brand-100/80 text-lg mb-8 max-w-xl mx-auto">
                 Subscribe to the launch offer and get your brand on the road

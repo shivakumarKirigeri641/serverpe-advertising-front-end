@@ -210,8 +210,14 @@ export default function Subscribe() {
             className="grid grid-cols-2 gap-4 max-w-lg mx-auto mt-8"
           >
             {[
-              { label: "Launch Offer 1", detail: "3 Autos · 7 Days · ₹1,999" },
-              { label: "Launch Offer 2", detail: "2 Autos · 5 Days · ₹1,799" },
+              {
+                label: "Launch Offer 1",
+                detail: "3 Road Ads · 7 Days · ₹1,999",
+              },
+              {
+                label: "Launch Offer 2",
+                detail: "2 Road Ads · 5 Days · ₹1,799",
+              },
             ].map((o, i) => (
               <div
                 key={i}
@@ -571,7 +577,7 @@ export default function Subscribe() {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300">
                   {[
                     "Banner print & installation — FREE",
-                    "NFC tap tracking on each auto",
+                    "NFC tap tracking on each creative road ad",
                     "QR code for passer-by engagement",
                     "Daily WhatsApp & SMS notifications",
                     "Daily photo proof of your live banner",

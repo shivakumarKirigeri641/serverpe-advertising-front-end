@@ -8,14 +8,16 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 
-export const getQueryTypes = () => api.get("/advertising/campaigns/query-type");
+// Hoarding endpoints
+export const getHoardings = () => api.get("/advertising/hoardings");
+export const getHoardingById = (id) => api.get(`/advertising/hoardings/${id}`);
 
+// Contact / general endpoints
+export const getQueryTypes = () => api.get("/advertising/campaigns/query-type");
 export const submitContactMe = (data) =>
   api.post("/advertising/campaigns/contact-me", data);
-
 export const getBusinessTypes = () =>
   api.get("/advertising/campaigns/business-type");
-
 export const getStatesAndCities = () =>
   api.get("/advertising/campaigns/states-unions-cities");
 

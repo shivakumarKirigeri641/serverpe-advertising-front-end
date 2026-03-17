@@ -4,12 +4,12 @@ const Terms = () => {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-20 bg-gradient-to-br from-dark-900 via-dark-800 to-dark-700">
+      <section className="bg-gradient-to-br from-primary-50 to-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
             Terms &amp; Conditions
           </h1>
-          <p className="text-gray-400">Last updated: March 2026</p>
+          <p className="text-gray-500">Last updated: March 2026</p>
         </div>
       </section>
 
@@ -21,26 +21,26 @@ const Terms = () => {
               1. Acceptance of Terms
             </h2>
             <p>
-              By accessing this website or contacting ServerPE™ Ads for
-              advertising services, you agree to be bound by these Terms &amp;
-              Conditions. If you do not agree, please do not use this service.
+              By accessing this website or contacting ServerPe™ for advertising
+              services, you agree to be bound by these Terms &amp; Conditions.
+              If you do not agree, please do not use this service.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
               2. Description of Services
             </h2>
             <p>
-              ServerPE™ Ads, operated by Shivakumar Kirigeri, provides auto
-              rickshaw banner advertising services in Bengaluru. Services
-              include:
+              ServerPe™, operated by Shivakumar Kirigeri, provides on-road
+              creative ad advertising services in Bengaluru. Services include:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                Printing the advertiser-supplied design image to auto-behind
-                banner dimensions
+                Printing the advertiser-supplied design image to compact road-ad
+                dimensions
               </li>
               <li>
-                Laminating and installing the printed banner on auto rickshaws
+                Laminating and installing the printed creative ad on road with
+                movement drivers
               </li>
               <li>
                 NFC-based campaign tracking — SMS/WhatsApp notifications
@@ -58,8 +58,8 @@ const Terms = () => {
               <strong>Design is the advertiser's responsibility.</strong> I do
               not create or modify advertising designs. The advertiser must
               provide a complete, print-ready design image. I will print the
-              provided design to standard auto-behind banner dimensions,
-              laminate it, and prepare it for installation.
+              provided design to standard compact road-ad dimensions, laminate
+              it, and prepare it for installation.
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
@@ -109,12 +109,12 @@ const Terms = () => {
             </h2>
             <ul className="list-disc pl-6 space-y-2">
               <li>
-                Campaign duration and vehicle count will be agreed upon before
+                Campaign duration and road ad count will be agreed upon before
                 installation
               </li>
-              <li>Auto rickshaws serve as the primary advertising medium</li>
+              <li>Creative road ads serve as the primary advertising medium</li>
               <li>
-                Vehicle availability and routing are subject to the driver's
+                Road ad availability and routing are subject to the driver’s
                 normal operations — specific routes cannot be guaranteed
               </li>
             </ul>
@@ -141,9 +141,9 @@ const Terms = () => {
               7. NFC Tracking Notifications
             </h2>
             <p>
-              Campaign tracking is provided via NFC tags on the rickshaw. An SMS
-              and/or WhatsApp notification is triggered whenever the driver taps
-              the NFC tag. Please note:
+              Campaign tracking is provided via NFC tags on each creative road
+              ad. An SMS and/or WhatsApp notification is triggered whenever the
+              driver taps the NFC tag. Please note:
             </p>
             <ul className="list-disc pl-6 space-y-2">
               <li>
@@ -165,7 +165,7 @@ const Terms = () => {
             </h2>
             <p>
               The advertiser retains full ownership of their design image. The
-              ServerPE™ Ads brand, website content, and platform concept are the
+              ServerPe™ brand, website content, and platform concept are the
               intellectual property of Shivakumar Kirigeri and may not be copied
               or used without written permission.
             </p>
@@ -174,7 +174,7 @@ const Terms = () => {
               9. Limitation of Liability
             </h2>
             <p>
-              ServerPE™ Ads shall not be liable for any indirect, incidental, or
+              ServerPe™ shall not be liable for any indirect, incidental, or
               consequential damages arising from the use of this service. Total
               liability shall not exceed the amount paid for the specific
               campaign in question.
@@ -186,7 +186,7 @@ const Terms = () => {
             <p>
               Services are provided "as is." While I strive for reliability, I
               make no warranties regarding specific campaign outcomes, audience
-              reach, or conversion results from auto rickshaw advertising.
+              reach, or conversion results from ads on movement.
             </p>
 
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
@@ -218,7 +218,7 @@ const Terms = () => {
             <ul className="list-disc pl-6 space-y-2">
               <li>
                 Via the{" "}
-                <a href="/contact" className="text-brand-500 hover:underline">
+                <a href="/contact" className="text-primary-600 hover:underline">
                   Contact Page
                 </a>
               </li>

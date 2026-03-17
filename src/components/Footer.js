@@ -1,71 +1,48 @@
-import { NavLink } from "react-router-dom";
-import { FaWhatsapp, FaInstagram } from "react-icons/fa";
-import logo from "../images/logo1.png";
+import { Link } from "react-router-dom";
+
+const footerLinks = [
+  { to: "/about", label: "About" },
+  { to: "/contact", label: "Contact" },
+  { to: "/hoardings", label: "Explore Hoardings" },
+  { to: "/privacy", label: "Privacy Policy" },
+  { to: "/terms", label: "Terms of Service" },
+];
 
 export default function Footer() {
   return (
-    <footer className="bg-dark-800 border-t border-dark-600 mt-20">
+    <footer className="bg-white border-t border-gray-100 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <img
-                src={logo}
-                alt="ServerPe Ads Logo"
-                className="w-9 h-9 object-contain"
-              />
-              <span className="text-white font-extrabold text-lg">
+            <Link to="/" className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">SP</span>
+              </div>
+              <span className="text-lg font-bold text-gray-900">
                 ServerPe
-                <sup className="text-[9px] align-super font-bold">™</sup>
-                <span className="text-brand-400"> Ads</span>
+                <sup className="text-[10px] align-super font-bold">™</sup>{" "}
+                <span className="text-primary-600">Ads</span>
               </span>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              An individual initiative putting your brand on wheels. Direct
-              contact, real tracking, zero agency fees.
+            </Link>
+            <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+              Find the right place to promote your business. Transparent
+              pricing, verified locations, easy booking.
             </p>
-            <div className="flex gap-4 mt-5">
-              <a
-                href="https://wa.me/917996083415"
-                target="_blank"
-                rel="noreferrer"
-                className="text-gray-400 hover:text-green-400 transition-colors text-xl"
-              >
-                <FaWhatsapp />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                className="text-gray-400 hover:text-pink-400 transition-colors text-xl"
-              >
-                <FaInstagram />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              {[
-                { label: "Home", to: "/" },
-                { label: "Services", to: "/services" },
-                { label: "Pricing", to: "/pricing" },
-                { label: "About Me", to: "/about" },
-                { label: "Contact Me", to: "/contact" },
-                { label: "Get Launch Offer", to: "/subscribe" },
-                { label: "Privacy Policy", to: "/privacy" },
-                { label: "Terms & Conditions", to: "/terms" },
-              ].map((link) => (
+            <h4 className="text-gray-900 font-semibold mb-4">Quick Links</h4>
+            <ul className="space-y-2.5">
+              {footerLinks.map((link) => (
                 <li key={link.to}>
-                  <NavLink
+                  <Link
                     to={link.to}
-                    className="text-gray-400 hover:text-brand-400 transition-colors"
+                    className="text-sm text-gray-500 hover:text-primary-600 transition-colors"
                   >
                     {link.label}
-                  </NavLink>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -73,50 +50,48 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-semibold mb-4">Get In Touch</h4>
-            <p className="text-gray-400 text-sm mb-2">
-              Direct contact with Shivakumar — no customer care, real answers.
+            <h4 className="text-gray-900 font-semibold mb-4">Get In Touch</h4>
+            <p className="text-sm text-gray-500 mb-2">
+              Have a question? I'm here to help.
             </p>
-            <p className="text-gray-400 text-sm mt-2">
-              📞{" "}
+            <p className="text-sm text-gray-500">
+              Email:{" "}
+              <a
+                href="mailto:support@serverpe.in"
+                className="text-primary-600 hover:underline"
+              >
+                support@serverpe.in
+              </a>
+            </p>
+            <p className="text-sm text-gray-500 mt-1">
+              Phone:{" "}
               <a
                 href="tel:+917996083415"
-                className="hover:text-brand-400 transition-colors"
+                className="text-primary-600 hover:underline"
               >
                 +91 79960 83415
               </a>
             </p>
-            <p className="text-gray-400 text-sm mt-1">
-              🌐{" "}
-              <a
-                href="https://serverpe.in"
-                target="_blank"
-                rel="noreferrer"
-                className="text-brand-400 hover:underline"
-              >
-                serverpe.in
-              </a>
-            </p>
-            <NavLink
+            <Link
               to="/contact"
-              className="inline-block mt-3 btn-outline text-sm py-2 px-4"
+              className="inline-block mt-4 text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
             >
-              Send a Message
-            </NavLink>
+              Send a Message &rarr;
+            </Link>
           </div>
         </div>
 
-        <div className="border-t border-dark-600 mt-10 pt-6 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} ServerPE™ Advertising. An initiative by
-          Shivakumar Kirigeri. Powered by{" "}
-          <a
-            href="https://serverpe.in"
-            target="_blank"
-            rel="noreferrer"
-            className="text-brand-400 hover:underline"
-          >
-            serverpe.in
-          </a>
+        <div className="border-t border-gray-100 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-gray-400 text-sm">
+            &copy; {new Date().getFullYear()} ServerPe. All rights reserved.
+          </p>
+          <div className="flex items-center gap-4 text-xs text-gray-400">
+            <span>🔒 Secure booking</span>
+            <span className="text-gray-200">|</span>
+            <span>✓ Verified locations</span>
+            <span className="text-gray-200">|</span>
+            <span>📸 Proof of installation</span>
+          </div>
         </div>
       </div>
     </footer>

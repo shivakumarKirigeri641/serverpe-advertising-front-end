@@ -41,7 +41,7 @@ export default function Pricing() {
             transition={{ delay: 0.1, duration: 0.55 }}
             className="text-4xl sm:text-5xl font-extrabold text-white mb-5"
           >
-            Per Auto. Per Week.{" "}
+            Per Ad on Road. Per Week.{" "}
             <span className="text-brand-400">Zero Surprises.</span>
           </motion.h1>
           <motion.p
@@ -52,9 +52,9 @@ export default function Pricing() {
           >
             Choose the tracking level that suits your budget. All plans are{" "}
             <span className="text-white font-semibold">
-              per auto rickshaw per week
+              per road ad per week
             </span>
-            . Pick how many autos and how many weeks — fully flexible.
+            . Pick how many road ads and how many weeks — fully flexible.
           </motion.p>
         </div>
       </section>
@@ -64,9 +64,11 @@ export default function Pricing() {
         <div className="max-w-3xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center text-sm">
             <div>
-              <p className="text-brand-400 font-extrabold text-2xl">Per Auto</p>
+              <p className="text-brand-400 font-extrabold text-2xl">
+                Per Ad on Road
+              </p>
               <p className="text-gray-400 mt-1">
-                Pricing is per individual auto rickshaw
+                Pricing is per individual creative road ad
               </p>
             </div>
             <div>
@@ -102,9 +104,9 @@ export default function Pricing() {
               </span>
             </div>
             <p className="text-gray-400 text-sm max-w-xl mx-auto">
-              An NFC tag is placed on the auto. Whenever the driver taps it, you
-              receive a real-time notification confirming your banner is live
-              and on the road.
+              An NFC tag is placed on each creative road ad. Whenever the driver
+              taps it, you receive a real-time notification confirming your
+              banner is live and on the road.
             </p>
           </motion.div>
 
@@ -130,7 +132,7 @@ export default function Pricing() {
                 <p className="text-4xl font-extrabold text-white">
                   ₹1,499
                   <span className="text-gray-500 text-sm font-normal ml-1">
-                    / auto / week
+                    / road ad / week
                   </span>
                 </p>
               </div>
@@ -138,7 +140,7 @@ export default function Pricing() {
                 {[
                   {
                     icon: <MdNearMe size={14} />,
-                    text: "NFC tag on auto — real-time tap tracking",
+                    text: "NFC tag on each creative road ad — real-time tap tracking",
                   },
                   {
                     icon: <TbBrandWhatsapp size={14} />,
@@ -192,7 +194,7 @@ export default function Pricing() {
                 <p className="text-4xl font-extrabold text-white">
                   ₹1,399
                   <span className="text-gray-500 text-sm font-normal ml-1">
-                    / auto / week
+                    / road ad / week
                   </span>
                 </p>
               </div>
@@ -200,7 +202,7 @@ export default function Pricing() {
                 {[
                   {
                     icon: <MdNearMe size={14} />,
-                    text: "NFC tag on auto — real-time tap tracking",
+                    text: "NFC tag on each creative road ad — real-time tap tracking",
                   },
                   {
                     icon: <FiMessageSquare size={14} />,
@@ -258,9 +260,9 @@ export default function Pricing() {
               </span>
             </div>
             <p className="text-gray-400 text-sm max-w-xl mx-auto">
-              No NFC hardware — your banner still goes on the auto with daily
+              No NFC hardware — your creative road ad still goes out with daily
               photo proof and manual notifications. A budget-friendly entry
-              point to auto advertising.
+              point to ads on road.
             </p>
           </motion.div>
 
@@ -283,7 +285,7 @@ export default function Pricing() {
                 <p className="text-4xl font-extrabold text-white">
                   ₹1,199
                   <span className="text-gray-500 text-sm font-normal ml-1">
-                    / auto / week
+                    / road ad / week
                   </span>
                 </p>
               </div>
@@ -341,7 +343,7 @@ export default function Pricing() {
                 <p className="text-4xl font-extrabold text-white">
                   ₹999
                   <span className="text-gray-500 text-sm font-normal ml-1">
-                    / auto / week
+                    / road ad / week
                   </span>
                 </p>
               </div>
@@ -480,12 +482,12 @@ export default function Pricing() {
                     </span>
                   </p>
                   <p className="text-brand-400 text-sm font-semibold mt-1">
-                    3 autos on the road
+                    3 creative road ads live
                   </p>
                 </div>
                 <ul className="space-y-2 text-sm text-gray-300 flex-1">
                   {[
-                    "3 autos covering your city",
+                    "3 creative road ads covering your city",
                     "You provide design — printing & installation FREE",
                     "NFC & QR code tracking included",
                     "Daily photo proof & WhatsApp notifications",
@@ -526,12 +528,12 @@ export default function Pricing() {
                     </span>
                   </p>
                   <p className="text-brand-400 text-sm font-semibold mt-1">
-                    2 autos on the road
+                    2 creative road ads live
                   </p>
                 </div>
                 <ul className="space-y-2 text-sm text-gray-300 flex-1">
                   {[
-                    "2 autos deployed in your area",
+                    "2 creative road ads deployed in your area",
                     "You provide design — printing & installation FREE",
                     "NFC & QR code tracking included",
                     "Daily photo proof & WhatsApp notifications",
@@ -566,8 +568,9 @@ export default function Pricing() {
               <span className="text-brand-400 font-semibold">
                 Want more reach?
               </span>{" "}
-              After your launch offer campaign, scale to any number of autos for
-              custom weekly campaigns once you've experienced the results.
+              After your launch offer campaign, scale to any number of creative
+              road ads for custom weekly campaigns once you've experienced the
+              results.
             </p>
           </motion.div>
         </div>
@@ -589,7 +592,7 @@ export default function Pricing() {
                 Ready to put your brand on the road?
               </h2>
               <p className="text-brand-100/80 text-lg mb-8 max-w-xl mx-auto">
-                Contact Shivakumar directly to discuss autos, weeks, and the
+                Contact Shivakumar directly to discuss road ads, weeks, and the
                 right tracking plan for your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

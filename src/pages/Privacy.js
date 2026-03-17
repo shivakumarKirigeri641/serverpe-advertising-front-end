@@ -4,12 +4,12 @@ const Privacy = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="relative pt-32 pb-16 lg:pt-40 lg:pb-20 bg-gradient-to-br from-dark-900 via-dark-800 to-dark-700">
+      <section className="bg-gradient-to-br from-primary-50 to-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
             Privacy Policy
           </h1>
-          <p className="text-gray-400">Last updated: March 2026</p>
+          <p className="text-gray-500">Last updated: March 2026</p>
         </div>
       </section>
 
@@ -22,7 +22,7 @@ const Privacy = () => {
             </h2>
             <p>
               ServerPE™ is an individual initiative by Shivakumar Kirigeri,
-              providing auto rickshaw advertising services in Bengaluru. This
+              providing ads-on-movement advertising services in Bengaluru. This
               Privacy Policy explains how I collect, use, and safeguard your
               information when you visit this website or get in touch for
               advertising services.
@@ -63,7 +63,7 @@ const Privacy = () => {
             <p>I use the information you provide to:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li>Respond to your advertising enquiries personally</li>
-              <li>Plan and manage your auto rickshaw advertising campaign</li>
+              <li>Plan and manage your ads-on-movement advertising campaign</li>
               <li>
                 Send NFC-triggered campaign tracking notifications via SMS or
                 WhatsApp (when applicable)
@@ -164,7 +164,7 @@ const Privacy = () => {
             <ul className="list-disc pl-6 space-y-2">
               <li>
                 Via the{" "}
-                <a href="/contact" className="text-brand-500 hover:underline">
+                <a href="/contact" className="text-primary-600 hover:underline">
                   Contact Page
                 </a>
               </li>

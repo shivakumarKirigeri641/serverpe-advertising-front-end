@@ -43,12 +43,12 @@ const values = [
   {
     icon: <FiUsers size={22} />,
     title: "Win-Win for Drivers & Businesses",
-    desc: "Auto drivers earn extra income, businesses get city-wide outdoor visibility. A model where everyone benefits.",
+    desc: "Road partners earn extra income, businesses get city-wide outdoor visibility through creative ads on road. A model where everyone benefits.",
   },
   {
     icon: <FiTarget size={22} />,
     title: "Direct Founder Contact",
-    desc: "No customer care queues. No middlemen. Talk directly to the person running this auto advertising portal.",
+    desc: "No customer care queues. No middlemen. Talk directly to the person running this ads-on-movement portal.",
   },
   {
     icon: <FiGlobe size={22} />,
@@ -63,7 +63,7 @@ const values = [
   {
     icon: <FiTrendingUp size={22} />,
     title: "Scalable Campaigns",
-    desc: "Start with a launch offer trial, build trust, then scale to any number of autos for 28-day city-wide campaigns.",
+    desc: "Start with a launch offer trial, build trust, then scale to any number of creative road ads for 28-day city-wide campaigns.",
   },
 ];
 
@@ -90,12 +90,12 @@ export default function AboutMe() {
             transition={{ duration: 0.5 }}
           >
             <span className="inline-block bg-brand-500/15 border border-brand-500/30 text-brand-400 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-5">
-              About ServerPe Ads
+              About ServerPe
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
               The Story Behind{" "}
               <span className="text-brand-400">
-                Bengaluru's Auto Advertising Platform
+                Bengaluru's Ads on Movement Platform
               </span>
             </h1>
             <p className="section-sub mt-5 max-w-3xl mx-auto">
@@ -140,7 +140,7 @@ export default function AboutMe() {
                   }}
                   className="absolute -bottom-4 -right-4 bg-dark-700 border border-brand-500/30 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg"
                 >
-                  <span className="text-brand-400">🛺</span> Auto Advertising
+                  <span className="text-brand-400">🛺</span> Ads on Movement
                   Pioneer
                 </motion.div>
               </div>
@@ -168,7 +168,7 @@ export default function AboutMe() {
                 </span>{" "}
                 as a personal initiative to make{" "}
                 <span className="text-brand-400 font-medium">
-                  auto rickshaw advertising
+                  ads on movement
                 </span>{" "}
                 genuinely accessible and trackable for every small and medium
                 business in Bengaluru.
@@ -198,9 +198,9 @@ export default function AboutMe() {
                   not from any advertising agency
                 </span>
                 . I'm not competing with anyone. This is a simple, honest
-                individual initiative — auto drivers earn income, businesses get
-                outdoor visibility across the city, and the tracking tech makes
-                it all accountable via NFC &amp; QR codes.
+                individual initiative — road partners earn income, businesses
+                get outdoor visibility across the city, and the tracking tech
+                makes it all accountable via NFC &amp; QR codes.
               </p>
               <p className="flex items-center gap-2 text-sm">
                 <FiPhone className="text-brand-400 shrink-0" size={16} />
@@ -271,11 +271,9 @@ export default function AboutMe() {
             variants={fadeUp}
             className="text-center mb-12"
           >
-            <h2 className="section-heading">
-              Why Businesses Trust ServerPe Ads
-            </h2>
+            <h2 className="section-heading">Why Businesses Trust ServerPe</h2>
             <p className="section-sub">
-              Values-driven auto advertising with complete transparency and
+              Values-driven ads on movement with complete transparency and
               technology-backed tracking.
             </p>
           </motion.div>
@@ -347,15 +345,15 @@ export default function AboutMe() {
                 <span className="text-white font-semibold">ServerPE™</span> —
                 focuses specifically on{" "}
                 <span className="text-brand-400 font-medium">
-                  hyperlocal, on-vehicle outdoor advertising
+                  hyperlocal, creative-ad-on-road outdoor advertising
                 </span>
-                . My current vehicle of choice is the humble auto rickshaw:
+                . My current choice is the humble three-wheeled city auto —
                 nimble, city-wide, affordable, and already trusted by millions
                 of commuters daily across Bengaluru.
               </p>
               <p>
-                I handle everything personally — from onboarding auto drivers to
-                banner installation to tech support. If you have a question, you
+                I handle everything personally — from onboarding road partners
+                to ad installation to tech support. If you have a question, you
                 aren't reaching a helpdesk. You're reaching me directly at{" "}
                 <a
                   href="tel:+917996083415"
@@ -372,7 +370,7 @@ export default function AboutMe() {
                 <div className="w-full max-w-sm h-72 rounded-3xl overflow-hidden border-2 border-dark-600 shadow-2xl">
                   <img
                     src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80"
-                    alt="ServerPe technology platform for auto advertising management"
+                    alt="ServerPe technology platform for ads on movement management"
                     className="w-full h-full object-cover"
                     loading="lazy"
                   />
@@ -414,7 +412,7 @@ export default function AboutMe() {
             <div className="absolute inset-0 bg-gradient-to-br from-brand-600/95 to-brand-800/95" />
             <div className="relative z-10 p-10 md:p-14 text-center">
               <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-                Want to Know More About Auto Advertising?
+                Want to Know More About Ads on Movement?
               </h2>
               <p className="text-brand-100/80 text-lg mb-8 max-w-xl mx-auto">
                 Reach out directly — I'd love to discuss how your business can
