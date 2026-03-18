@@ -428,8 +428,10 @@ export default function Pricing() {
                 Pay{" "}
                 <span className="text-yellow-400 font-semibold">₹200 less</span>{" "}
                 on any launch offer{" "}
-                <span className="text-yellow-400 font-semibold">and get installation charges waived</span>.
-                Limited to the first 5 sign-ups only!
+                <span className="text-yellow-400 font-semibold">
+                  and get installation charges waived
+                </span>
+                . Limited to the first 5 sign-ups only!
               </p>
               <div className="flex justify-center gap-8 mt-3">
                 <div>

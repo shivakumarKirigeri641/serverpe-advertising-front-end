@@ -90,7 +90,12 @@ export default function Home() {
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
           animate={{ x: ["-100%", "200%"] }}
-          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
+          transition={{
+            duration: 2.2,
+            repeat: Infinity,
+            repeatDelay: 2.5,
+            ease: "easeInOut",
+          }}
         />
 
         <div className="relative py-3 px-4">
@@ -110,7 +115,11 @@ export default function Home() {
             <motion.span
               className="bg-amber-900 text-amber-100 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide"
               animate={{ scale: [1, 1.08, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
               0% Platform Fee
             </motion.span>
@@ -120,7 +129,12 @@ export default function Home() {
             <motion.span
               className="bg-amber-900 text-amber-100 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide"
               animate={{ scale: [1, 1.08, 1] }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.75 }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.75,
+              }}
             >
               FREE Installation
             </motion.span>
@@ -132,7 +146,11 @@ export default function Home() {
             <motion.span
               className="inline-flex items-center gap-1 bg-amber-900 text-amber-100 px-3 py-0.5 rounded-full text-xs font-bold"
               animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 0.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
             >
               Grab yours →
             </motion.span>
