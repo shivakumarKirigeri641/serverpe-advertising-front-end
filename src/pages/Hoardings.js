@@ -44,7 +44,7 @@ export default function Hoardings() {
     return hoardingsList.filter((h) => {
       if (city && h.city !== city) return false;
       if (traffic && h.traffic !== traffic) return false;
-      if (h.currentBid < range.min || h.currentBid > range.max) return false;
+      if (h.price < range.min || h.price > range.max) return false;
       if (search) {
         const q = search.toLowerCase();
         return (

@@ -12,27 +12,27 @@ const steps = [
   {
     step: "01",
     icon: HiOutlineCursorClick,
-    title: "You Place a Bid — Live Bidding",
+    title: "Browse & Get a Quote",
     description:
-      "Browse verified hoardings and place your bid in the live bidding session. You'll receive an instant SMS & WhatsApp notification confirming your bid is registered.",
+      "Explore verified hoardings across Bangalore. Pick the perfect spot for your ad and request a quote instantly. You'll receive confirmation via SMS & WhatsApp.",
     tag: "📲 SMS + WhatsApp Confirmation Sent",
     tagColor: "bg-blue-50 text-blue-700",
   },
   {
     step: "02",
     icon: HiOutlineBell,
-    title: "Real-Time Bid Updates",
+    title: "Review Your Quote",
     description:
-      "Outbid? You get notified immediately via SMS & WhatsApp so you can act fast. Win? You receive a winning confirmation on both channels — guaranteed.",
-    tag: "🔔 Live Outbid & Win Alerts",
+      "Receive a detailed quote with transparent pricing — ad placement cost, platform fee, and total. No hidden charges. Review everything before you commit.",
+    tag: "🔔 Transparent Pricing · No Surprises",
     tagColor: "bg-orange-50 text-orange-700",
   },
   {
     step: "03",
     icon: HiOutlineShieldCheck,
-    title: "Pay 50% on Winning — Funds Held Securely",
+    title: "Pay 50% to Confirm — Funds Held Securely",
     description:
-      "Pay only 50% of the total amount after winning. Your payment is held in full security — NOT released to the hoarding owner until you see installation proof.",
+      "Pay only 50% of the total amount to confirm your booking. Your payment is held in full security — NOT released to the hoarding owner until you see installation proof.",
     tag: "🔒 50% Upfront · Funds Secured",
     tagColor: "bg-primary-50 text-primary-700",
   },
@@ -50,7 +50,7 @@ const steps = [
     icon: HiOutlineCheckCircle,
     title: "100% Trust Guaranteed",
     description:
-      "Your money NEVER goes to the hoarding owner before you see proof. Whether you win or lose the bid — we notify you every step of the way. No surprises. Full transparency.",
+      "Your money NEVER goes to the hoarding owner before you see proof. You are notified every step of the way. No surprises. Full transparency.",
     tag: "✅ Money Protected Until You Confirm",
     tagColor: "bg-emerald-50 text-emerald-700",
   },
@@ -135,7 +135,7 @@ export default function PaymentModal({ onClose }) {
             </div>
           </div>
           <button onClick={onClose} className="w-full btn-primary py-3">
-            I Understand — Start Bidding
+            I Understand — Let's Get Started
           </button>
         </div>
       </div>

@@ -18,7 +18,7 @@ const values = [
     icon: HiOutlineCurrencyRupee,
     title: "Better Pricing",
     description:
-      "My bidding system ensures fair market pricing. Advertisers compete transparently, so you always get the best value.",
+      "My transparent pricing ensures you always get the best value. No hidden fees, no auctions — just straightforward, honest pricing.",
   },
   {
     icon: HiOutlineUserGroup,
@@ -97,7 +97,7 @@ export default function About() {
               </p>
               <p>
                 That's why I built ServerPe™ — a platform where you can browse
-                verified hoardings, see real traffic numbers, and bid
+                verified hoardings, see real traffic numbers, and book
                 transparently for the best spots. Whether you're a local
                 business or a growing brand, I make it simple to find the right
                 place to promote your message.

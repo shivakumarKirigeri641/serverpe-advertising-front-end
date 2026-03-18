@@ -9,7 +9,7 @@ const hoardings = [
     size: "30ft x 15ft",
     traffic: "Very High",
     visibility: "Excellent — prime CBD junction",
-    currentBid: 72000,
+    price: 72000,
     image:
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=400&fit=crop",
     description:
@@ -26,7 +26,7 @@ const hoardings = [
     size: "35ft x 18ft",
     traffic: "High",
     visibility: "Great — F&B and retail corridor",
-    currentBid: 58000,
+    price: 58000,
     image:
       "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop",
     description:
@@ -43,7 +43,7 @@ const hoardings = [
     size: "28ft x 14ft",
     traffic: "High",
     visibility: "Great — startup & youth hub",
-    currentBid: 52000,
+    price: 52000,
     image:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop",
     description:
@@ -60,7 +60,7 @@ const hoardings = [
     size: "40ft x 20ft",
     traffic: "Very High",
     visibility: "Excellent — elevated, 300m sightline",
-    currentBid: 95000,
+    price: 95000,
     image:
       "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600&h=400&fit=crop",
     description:
@@ -77,7 +77,7 @@ const hoardings = [
     size: "35ft x 15ft",
     traffic: "High",
     visibility: "Great — IT park corridor",
-    currentBid: 68000,
+    price: 68000,
     image:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop",
     description:
@@ -94,7 +94,7 @@ const hoardings = [
     size: "30ft x 15ft",
     traffic: "High",
     visibility: "Good — elevated highway proximity",
-    currentBid: 44000,
+    price: 44000,
     image:
       "https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?w=600&h=400&fit=crop",
     description:

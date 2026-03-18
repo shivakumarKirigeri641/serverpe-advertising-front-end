@@ -23,15 +23,15 @@ const steps = [
   },
   {
     icon: HiOutlineCursorClick,
-    title: "Place Your Bid",
+    title: "Get a Quote",
     description:
-      "Found the right spot? Place your bid easily through my simple and secure bidding system.",
+      "Found the right spot? Request a quote instantly. Transparent pricing with no hidden fees.",
   },
   {
     icon: HiOutlineBadgeCheck,
-    title: "Win & Promote",
+    title: "Review, Pay & Go Live",
     description:
-      "Win the placement and launch your campaign. I handle the rest — from installation to proof of display.",
+      "Review your quote, confirm your booking, and launch your campaign. I handle the rest — from installation to proof of display.",
   },
 ];
 
@@ -40,7 +40,7 @@ const whyChooseItems = [
     icon: HiOutlineCurrencyRupee,
     title: "Transparent Pricing",
     description:
-      "No hidden fees. You see exactly what you pay — bid amount, platform fee (5%), and total. Always.",
+      "No hidden fees. You see exactly what you pay — ad placement cost and total. Always. First 5 advertisers pay zero platform fee.",
   },
   {
     icon: HiOutlineBadgeCheck,
@@ -75,6 +75,21 @@ export default function Home() {
 
   return (
     <div>
+      {/* Launch Offer Banner */}
+      <div className="bg-amber-400 text-amber-900 text-sm py-2.5 font-semibold">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <span>🎉</span>
+            <span>Limited Launch Offer — First 5 advertisers get</span>
+            <span className="bg-amber-900 text-amber-100 px-2 py-0.5 rounded-full text-xs font-bold tracking-wide">
+              0% Platform Fee
+            </span>
+            <span className="text-amber-700">·</span>
+            <span>Only a few spots left. Grab yours now!</span>
+          </div>
+        </div>
+      </div>
+
       {/* Trust Banner */}
       <div className="bg-green-600 text-white text-sm py-2.5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,12 +121,12 @@ export default function Home() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight animate-slide-up">
-              Get the best place to promote your business at the right area
+              Your one-stop shop to advertise and reach your customers
             </h1>
             <p className="mt-6 text-lg md:text-xl text-primary-100 leading-relaxed max-w-2xl">
-              Discover premium billboard locations in Bangalore with transparent
-              pricing, verified hoardings, and an easy bidding system. Reach
-              your audience where it matters most.
+              Discover premium billboard locations in Bangalore. Browse, get a
+              quote, review, pay, and approve — all in one place with full
+              transparency.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4">
               <Link
@@ -127,14 +142,18 @@ export default function Home() {
                 Start Advertising
               </Link>
             </div>
-            <p className="mt-5 text-sm text-primary-200">
+            <div className="mt-5 flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="inline-flex items-center gap-2 bg-amber-400 text-amber-900 font-bold px-4 py-2 rounded-xl text-sm">
+                <span>🎉</span>
+                <span>First 5 advertisers — 0% platform fee</span>
+              </div>
               <button
                 onClick={() => setShowPaymentModal(true)}
-                className="underline underline-offset-2 hover:text-white transition-colors"
+                className="text-sm text-primary-200 underline underline-offset-2 hover:text-white transition-colors"
               >
-                How does payment work? See our 4-step secure process →
+                How does payment work? →
               </button>
-            </p>
+            </div>
           </div>
 
           {/* Stats */}
@@ -224,16 +243,16 @@ export default function Home() {
               100% Trust Guaranteed
             </h2>
             <p className="text-gray-400 text-lg mt-3 max-w-2xl mx-auto">
-              Every rupee you spend is protected. Every bid is notified. Every
-              installation is proven before the final payment.
+              Every rupee you spend is protected. Every booking is notified.
+              Every installation is proven before the final payment.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               {
                 emoji: "📲",
-                title: "Live Bid SMS & WhatsApp",
-                desc: "Instant SMS & WhatsApp alerts when you bid, when you're outbid, and when you win. Real-time. 100% guaranteed.",
+                title: "SMS & WhatsApp Updates",
+                desc: "Instant SMS & WhatsApp alerts at every step — when you book, when your ad is installed, and when proof is ready. 100% guaranteed.",
                 border: "border-blue-500/30",
                 bg: "bg-blue-900/30",
               },
@@ -254,7 +273,7 @@ export default function Home() {
               {
                 emoji: "💰",
                 title: "50% · 50% Split",
-                desc: "Pay 50% when you win the bid. The remaining 50% is paid only after you see and confirm the installation proof.",
+                desc: "Pay 50% to confirm your booking. The remaining 50% is paid only after you see and confirm the installation proof.",
                 border: "border-green-500/30",
                 bg: "bg-green-900/30",
               },
@@ -275,7 +294,7 @@ export default function Home() {
           </div>
           <div className="mt-8 bg-green-600/10 border border-green-500/20 rounded-2xl p-6 text-center">
             <p className="text-white font-semibold text-base md:text-lg leading-relaxed">
-              Whether you win or lose the bid — you are{" "}
+              Whether you book or just browse — you are{" "}
               <span className="text-green-400">notified every step</span> via
               SMS &amp; WhatsApp. Your payment is{" "}
               <span className="text-green-400">fully secured</span> until you

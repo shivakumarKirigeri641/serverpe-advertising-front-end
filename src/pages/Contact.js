@@ -21,7 +21,7 @@ export default function Contact() {
           Get in Touch
         </h1>
         <p className="mt-4 text-lg text-gray-500">
-          Have a question about hoardings, bidding, or anything else? Drop me a
+          Have a question about hoardings, booking, or anything else? Drop me a
           message and I'll get back to you within 24 hours.
         </p>
         <p className="mt-3 text-sm text-gray-400">

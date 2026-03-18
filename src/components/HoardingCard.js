@@ -80,10 +80,10 @@ export default function HoardingCard({ hoarding }) {
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50">
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wide">
-              Current Bid
+              Price
             </p>
             <p className="text-lg font-bold text-primary-600">
-              {formatPrice(hoarding.currentBid)}
+              {formatPrice(hoarding.price)}
             </p>
           </div>
           <Link

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
   HiOutlineLocationMarker,
@@ -22,53 +22,11 @@ function formatPrice(price) {
   }).format(price);
 }
 
-function CountdownTimer() {
-  const getTimeLeft = useCallback(() => {
-    const now = new Date();
-    const end = new Date(now);
-    end.setHours(23, 59, 59, 999);
-    const diff = Math.max(0, end - now);
-    return {
-      hours: Math.floor(diff / 3600000),
-      minutes: Math.floor((diff % 3600000) / 60000),
-      seconds: Math.floor((diff % 60000) / 1000),
-    };
-  }, []);
-
-  const [time, setTime] = useState(getTimeLeft);
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(getTimeLeft()), 1000);
-    return () => clearInterval(interval);
-  }, [getTimeLeft]);
-
-  const pad = (n) => String(n).padStart(2, "0");
-
-  return (
-    <div className="flex gap-3">
-      {[
-        { val: time.hours, label: "Hours" },
-        { val: time.minutes, label: "Min" },
-        { val: time.seconds, label: "Sec" },
-      ].map((t) => (
-        <div
-          key={t.label}
-          className="bg-gray-50 rounded-xl px-4 py-2.5 text-center min-w-[60px]"
-        >
-          <p className="text-xl font-bold text-gray-900">{pad(t.val)}</p>
-          <p className="text-xs text-gray-400">{t.label}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 export default function HoardingDetails() {
   const { id } = useParams();
   const [hoarding, setHoarding] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [bidAmount, setBidAmount] = useState("");
-  const [bidPlaced, setBidPlaced] = useState(false);
+  const [quoteRequested, setQuoteRequested] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -112,13 +70,9 @@ export default function HoardingDetails() {
     );
   }
 
-  const handleBid = (e) => {
+  const handleGetQuote = (e) => {
     e.preventDefault();
-    const amount = Number(bidAmount);
-    if (amount > hoarding.currentBid) {
-      setBidPlaced(true);
-      setBidAmount("");
-    }
+    setQuoteRequested(true);
   };
 
   return (
@@ -283,43 +237,109 @@ export default function HoardingDetails() {
           </div>
         </div>
 
-        {/* Right: Bidding Section */}
+        {/* Right: Booking Section */}
         <div className="lg:col-span-2">
           <div className="sticky top-24 space-y-6">
-            {/* Bidding Card */}
+            {/* Pricing Card */}
             <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide">
-                    Current Highest Bid
+                    Price
                   </p>
                   <p className="text-3xl font-bold text-primary-600">
-                    {formatPrice(hoarding.currentBid)}
+                    {formatPrice(hoarding.price)}
                   </p>
                 </div>
                 <span className="text-xs font-semibold bg-green-50 text-green-600 px-3 py-1 rounded-full">
-                  Active
+                  Available
                 </span>
               </div>
 
-              {/* Countdown */}
-              <div className="mb-6">
-                <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">
-                  Bidding Ends In
-                </p>
-                <CountdownTimer />
+              {/* Launch Offer */}
+              <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4 flex items-center gap-3">
+                <span className="text-xl">🎉</span>
+                <div>
+                  <p className="text-xs font-bold text-amber-800 uppercase tracking-wide">
+                    Limited Launch Offer
+                  </p>
+                  <p className="text-sm text-amber-700 leading-snug mt-0.5">
+                    First <strong>5 advertisers</strong> get{" "}
+                    <strong>0% platform fee</strong>. Only a few spots left!
+                  </p>
+                </div>
               </div>
 
-              {/* Bid Form */}
-              {bidPlaced ? (
+              {/* Payment Breakdown */}
+              <div className="bg-gray-50 rounded-xl p-4 mb-5 border border-gray-100">
+                <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2.5">
+                  Payment Breakdown
+                </p>
+                <div className="space-y-1.5">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Ad Placement</span>
+                    <span className="font-medium text-gray-900">
+                      {formatPrice(hoarding.price)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Platform Fee</span>
+                    <span className="font-medium text-gray-900 flex items-center gap-1.5">
+                      <span className="line-through text-gray-400">
+                        {formatPrice(Math.round(hoarding.price * 0.05))}
+                      </span>
+                      <span className="text-green-600 font-bold">FREE</span>
+                    </span>
+                  </div>
+                  <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-bold">
+                    <span className="text-gray-900">Total</span>
+                    <span className="text-primary-600">
+                      {formatPrice(hoarding.price)}
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-3 rounded-lg overflow-hidden border border-gray-200">
+                  <div className="flex">
+                    <div className="flex-1 bg-primary-50 px-3 py-2 text-center border-r border-gray-200">
+                      <p className="text-xs text-primary-600 font-semibold">
+                        Pay to Book
+                      </p>
+                      <p className="text-sm font-bold text-primary-700 mt-0.5">
+                        {formatPrice(Math.round(hoarding.price * 0.5))}
+                      </p>
+                      <p className="text-[10px] text-primary-400 mt-0.5">
+                        50% upfront
+                      </p>
+                    </div>
+                    <div className="flex-1 bg-green-50 px-3 py-2 text-center">
+                      <p className="text-xs text-green-600 font-semibold">
+                        After Proof
+                      </p>
+                      <p className="text-sm font-bold text-green-700 mt-0.5">
+                        {formatPrice(Math.round(hoarding.price * 0.5))}
+                      </p>
+                      <p className="text-[10px] text-green-400 mt-0.5">
+                        50% on confirmation
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mt-2.5 text-center leading-relaxed">
+                  🔒 2nd payment released only after you confirm installation
+                  proof via WhatsApp/SMS
+                </p>
+              </div>
+
+              {/* Quote / Book Form */}
+              {quoteRequested ? (
                 <div className="space-y-3">
                   <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
                     <p className="text-green-700 font-bold text-base">
-                      🎉 Bid placed successfully!
+                      🎉 Quote request sent!
                     </p>
                     <p className="text-green-600 text-sm mt-1 leading-relaxed">
-                      You'll receive an <strong>SMS &amp; WhatsApp</strong>{" "}
-                      notification immediately confirming your bid.
+                      You'll receive your detailed quote via{" "}
+                      <strong>SMS &amp; WhatsApp</strong> shortly.
                     </p>
                   </div>
                   <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
@@ -328,10 +348,10 @@ export default function HoardingDetails() {
                     </p>
                     <ul className="space-y-2">
                       {[
-                        "If outbid — you'll get an SMS & WhatsApp alert instantly",
-                        "If you win — winning confirmation via SMS & WhatsApp",
-                        "Pay 50% on winning to confirm booking",
-                        "Remaining 50% only after installation photo proof",
+                        "Review your quote with full pricing details",
+                        "Pay 50% to confirm your booking",
+                        "Ad installed with photo & video proof sent to you",
+                        "Approve the installation, then pay remaining 50%",
                       ].map((line) => (
                         <li
                           key={line}
@@ -344,102 +364,24 @@ export default function HoardingDetails() {
                     </ul>
                   </div>
                   <button
-                    onClick={() => setBidPlaced(false)}
+                    onClick={() => setQuoteRequested(false)}
                     className="w-full text-sm text-primary-600 hover:text-primary-700 font-medium py-2"
                   >
-                    Place another bid
+                    Request another quote
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleBid}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                    Your Bid Amount (₹)
-                  </label>
-                  <input
-                    type="number"
-                    value={bidAmount}
-                    onChange={(e) => setBidAmount(e.target.value)}
-                    placeholder={`Minimum ${formatPrice(hoarding.currentBid + 1000)}`}
-                    min={hoarding.currentBid + 1}
-                    className="input-field mb-4"
-                    required
-                  />
-
-                  {/* Payment Summary — 50/50 split */}
-                  {bidAmount && Number(bidAmount) > hoarding.currentBid && (
-                    <div className="bg-gray-50 rounded-xl p-4 mb-4 border border-gray-100">
-                      <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2.5">
-                        Payment Breakdown
-                      </p>
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Bid Amount</span>
-                          <span className="font-medium text-gray-900">
-                            {formatPrice(Number(bidAmount))}
-                          </span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">
-                            Platform Fee (5%)
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {formatPrice(Math.round(Number(bidAmount) * 0.05))}
-                          </span>
-                        </div>
-                        <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-bold">
-                          <span className="text-gray-900">Total Payable</span>
-                          <span className="text-primary-600">
-                            {formatPrice(Math.round(Number(bidAmount) * 1.05))}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="mt-3 rounded-lg overflow-hidden border border-gray-200">
-                        <div className="flex">
-                          <div className="flex-1 bg-primary-50 px-3 py-2 text-center border-r border-gray-200">
-                            <p className="text-xs text-primary-600 font-semibold">
-                              Pay on Win
-                            </p>
-                            <p className="text-sm font-bold text-primary-700 mt-0.5">
-                              {formatPrice(
-                                Math.round(Number(bidAmount) * 1.05 * 0.5),
-                              )}
-                            </p>
-                            <p className="text-[10px] text-primary-400 mt-0.5">
-                              50% upfront
-                            </p>
-                          </div>
-                          <div className="flex-1 bg-green-50 px-3 py-2 text-center">
-                            <p className="text-xs text-green-600 font-semibold">
-                              After Proof
-                            </p>
-                            <p className="text-sm font-bold text-green-700 mt-0.5">
-                              {formatPrice(
-                                Math.round(Number(bidAmount) * 1.05 * 0.5),
-                              )}
-                            </p>
-                            <p className="text-[10px] text-green-400 mt-0.5">
-                              50% on confirmation
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-400 mt-2.5 text-center leading-relaxed">
-                        🔒 2nd payment released only after you confirm
-                        installation proof via WhatsApp/SMS
-                      </p>
-                    </div>
-                  )}
-
+                <div>
                   <button
-                    type="submit"
+                    onClick={handleGetQuote}
                     className="w-full btn-primary text-lg py-3.5"
                   >
-                    Place Bid
+                    Get a Quote
                   </button>
                   <p className="text-xs text-gray-400 text-center mt-3">
-                    You won't be charged until you win the bid
+                    No commitment — review your quote before paying
                   </p>
-                </form>
+                </div>
               )}
             </div>
 
@@ -496,7 +438,7 @@ export default function HoardingDetails() {
                   },
                   {
                     icon: HiOutlineClock,
-                    text: "Live bid alerts via SMS & WhatsApp",
+                    text: "Real-time updates via SMS & WhatsApp",
                     color: "text-blue-500",
                   },
                   {
@@ -531,7 +473,7 @@ export default function HoardingDetails() {
             {/* Help */}
             <div className="bg-primary-50 rounded-2xl p-5 text-center">
               <p className="text-sm text-primary-700 font-medium">
-                Need help with bidding?
+                Need help booking?
               </p>
               <Link
                 to="/contact"
