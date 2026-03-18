@@ -422,12 +422,14 @@ export default function Pricing() {
                 🔥 Early Bird Exclusive
               </p>
               <p className="text-white font-extrabold text-xl">
-                First 5 Businesses Only — ₹200 Off!
+                First 5 Businesses Only — ₹200 Off + FREE Installation!
               </p>
               <p className="text-gray-300 text-sm mt-2">
                 Pay{" "}
                 <span className="text-yellow-400 font-semibold">₹200 less</span>{" "}
-                on any launch offer. Limited to the first 5 sign-ups only!
+                on any launch offer{" "}
+                <span className="text-yellow-400 font-semibold">and get installation charges waived</span>.
+                Limited to the first 5 sign-ups only!
               </p>
               <div className="flex justify-center gap-8 mt-3">
                 <div>

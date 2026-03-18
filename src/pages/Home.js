@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   HiOutlineSearch,
   HiOutlineCursorClick,
@@ -63,6 +64,7 @@ const whyChooseItems = [
 ];
 
 export default function Home() {
+  const navigate = useNavigate();
   const [featured, setFeatured] = useState([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
@@ -76,19 +78,67 @@ export default function Home() {
   return (
     <div>
       {/* Launch Offer Banner */}
-      <div className="bg-amber-400 text-amber-900 text-sm py-2.5 font-semibold">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span>🎉</span>
-            <span>Limited Launch Offer — First 5 advertisers get</span>
-            <span className="bg-amber-900 text-amber-100 px-2 py-0.5 rounded-full text-xs font-bold tracking-wide">
+      <motion.div
+        className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 text-amber-900 font-semibold cursor-pointer select-none"
+        onClick={() => navigate("/subscribe")}
+        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        whileHover={{ scale: 1.01 }}
+        whileTap={{ scale: 0.99 }}
+      >
+        {/* Shimmer sweep */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
+          animate={{ x: ["-100%", "200%"] }}
+          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
+        />
+
+        <div className="relative py-3 px-4">
+          <div className="flex items-center justify-center gap-2 flex-wrap text-sm">
+            {/* Pulsing fire emoji */}
+            <motion.span
+              animate={{ scale: [1, 1.3, 1], rotate: [-5, 5, -5] }}
+              transition={{ duration: 1, repeat: Infinity, ease: "easeInOut" }}
+            >
+              🔥
+            </motion.span>
+
+            <span className="font-bold">LIMITED LAUNCH OFFER</span>
+            <span className="text-amber-800">—</span>
+            <span>First 5 advertisers get</span>
+
+            <motion.span
+              className="bg-amber-900 text-amber-100 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide"
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
               0% Platform Fee
-            </span>
+            </motion.span>
+
+            <span className="font-bold text-amber-800">+</span>
+
+            <motion.span
+              className="bg-amber-900 text-amber-100 px-2.5 py-0.5 rounded-full text-xs font-bold tracking-wide"
+              animate={{ scale: [1, 1.08, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut", delay: 0.75 }}
+            >
+              FREE Installation
+            </motion.span>
+
             <span className="text-amber-700">·</span>
-            <span>Only a few spots left. Grab yours now!</span>
+            <span>Only a few spots left.</span>
+
+            {/* Bouncing arrow CTA */}
+            <motion.span
+              className="inline-flex items-center gap-1 bg-amber-900 text-amber-100 px-3 py-0.5 rounded-full text-xs font-bold"
+              animate={{ x: [0, 4, 0] }}
+              transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+            >
+              Grab yours →
+            </motion.span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Trust Banner */}
       <div className="bg-green-600 text-white text-sm py-2.5">
