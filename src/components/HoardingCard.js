@@ -12,41 +12,45 @@ export default function HoardingCard({ hoarding }) {
       style: "currency",
       currency: "INR",
       maximumFractionDigits: 0,
-    }).format(price);
+    }).format(Number(price));
+
+  const trafficName = hoarding.traffic?.name ?? "";
 
   const trafficColor = {
-    Medium: "bg-yellow-100 text-yellow-700",
-    High: "bg-orange-100 text-orange-700",
-    "Very High": "bg-red-100 text-red-700",
+    "Low Traffic": "bg-green-100 text-green-700",
+    "Medium Traffic": "bg-yellow-100 text-yellow-700",
+    "High Traffic": "bg-orange-100 text-orange-700",
+    "Very High Traffic": "bg-red-100 text-red-700",
   };
+
+  const imageUrl = Array.isArray(hoarding.image_path)
+    ? hoarding.image_path[0]
+    : hoarding.image_path;
+
+  const sizeLabel = `${hoarding.width}ft x ${hoarding.height}ft`;
 
   return (
     <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
       {/* Image */}
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
-          src={hoarding.image}
+          src={imageUrl}
           alt={hoarding.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
         <span
           className={`absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full ${
-            trafficColor[hoarding.traffic] || "bg-gray-100 text-gray-600"
+            trafficColor[trafficName] || "bg-gray-100 text-gray-600"
           }`}
         >
-          {hoarding.traffic} Traffic
+          {trafficName}
         </span>
-        <div className="absolute top-3 right-3 flex flex-col gap-1.5 items-end">
+        <div className="absolute top-3 right-3">
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700 flex items-center gap-1">
             <HiOutlineBadgeCheck className="w-3.5 h-3.5" />
             Verified
           </span>
-          {hoarding.lit && (
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-primary-100 text-primary-700">
-              Lit
-            </span>
-          )}
         </div>
       </div>
 
@@ -57,18 +61,18 @@ export default function HoardingCard({ hoarding }) {
         </h3>
 
         <div className="flex items-center gap-1.5 mt-2 text-sm text-gray-500">
-          <HiOutlineLocationMarker className="w-4 h-4 text-gray-400" />
-          {hoarding.location}
+          <HiOutlineLocationMarker className="w-4 h-4 text-gray-400 flex-shrink-0" />
+          {hoarding.address1}, {hoarding.city_name}
         </div>
 
         <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
           <HiOutlineTrendingUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          {hoarding.size}
+          {sizeLabel}
         </div>
 
         <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
           <HiOutlineEye className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          {hoarding.impressionsPerDay} impressions/day
+          Visibility score: {hoarding.visibility_score}/10
         </div>
 
         <div className="mt-3">
@@ -80,11 +84,19 @@ export default function HoardingCard({ hoarding }) {
         <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-50">
           <div>
             <p className="text-xs text-gray-400 uppercase tracking-wide">
-              Price
+              Price / day
             </p>
             <p className="text-lg font-bold text-primary-600">
-              {formatPrice(hoarding.price)}
+              {formatPrice(hoarding.base_price)}
+              <span className="text-xs font-normal text-gray-400 ml-1">
+                /day
+              </span>
             </p>
+            {hoarding.comparable_price && (
+              <p className="text-xs text-gray-400 line-through">
+                {formatPrice(hoarding.comparable_price)}
+              </p>
+            )}
           </div>
           <Link
             to={`/hoardings/${hoarding.id}`}

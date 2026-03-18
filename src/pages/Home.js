@@ -13,7 +13,6 @@ import {
 import HoardingCard from "../components/HoardingCard";
 import PaymentModal from "../components/PaymentModal";
 import { getHoardings } from "../utils/api";
-import mockHoardings from "../data/hoardings";
 
 const steps = [
   {
@@ -69,10 +68,9 @@ export default function Home() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
-    // TODO: Replace mock fallback with real data once API is connected
-    getHoardings()
-      .then((res) => setFeatured(res.data.slice(0, 6)))
-      .catch(() => setFeatured(mockHoardings.slice(0, 6)));
+    getHoardings(1, 6)
+      .then((res) => setFeatured(res.data.data.hoardings))
+      .catch(() => setFeatured([]));
   }, []);
 
   return (

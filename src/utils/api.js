@@ -9,7 +9,8 @@ const api = axios.create({
 });
 
 // Hoarding endpoints
-export const getHoardings = () => api.get("/advertising/hoardings");
+export const getHoardings = (page = 1, limit = 10) =>
+  api.get("/advertising/hoardings", { params: { page, limit } });
 export const getHoardingById = (id) => api.get(`/advertising/hoardings/${id}`);
 
 // Contact / general endpoints

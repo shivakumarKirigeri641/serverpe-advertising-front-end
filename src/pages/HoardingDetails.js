@@ -12,7 +12,6 @@ import {
   HiOutlinePhotograph,
 } from "react-icons/hi";
 import { getHoardingById } from "../utils/api";
-import mockHoardings from "../data/hoardings";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-IN", {
@@ -26,17 +25,21 @@ export default function HoardingDetails() {
   const { id } = useParams();
   const [hoarding, setHoarding] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [quoteRequested, setQuoteRequested] = useState(false);
+  const [error, setError] = useState(null);
+  const [activeImage, setActiveImage] = useState(0);
+  const [days, setDays] = useState(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("advertiser_id"));
+  }, []);
 
   useEffect(() => {
     setLoading(true);
-    // TODO: Replace mock fallback with real data once API is connected
+    setError(null);
     getHoardingById(id)
-      .then((res) => setHoarding(res.data))
-      .catch(() => {
-        const found = mockHoardings.find((h) => h.id === Number(id));
-        setHoarding(found || null);
-      })
+      .then((res) => setHoarding(res.data.data))
+      .catch(() => setError("Failed to load hoarding details."))
       .finally(() => setLoading(false));
   }, [id]);
 
@@ -61,7 +64,7 @@ export default function HoardingDetails() {
     return (
       <div className="max-w-7xl mx-auto px-4 py-20 text-center">
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Hoarding not found
+          {error || "Hoarding not found"}
         </h2>
         <Link to="/hoardings" className="btn-primary">
           Back to Hoardings
@@ -70,10 +73,8 @@ export default function HoardingDetails() {
     );
   }
 
-  const handleGetQuote = (e) => {
-    e.preventDefault();
-    setQuoteRequested(true);
-  };
+  const pricePerDay = Number(hoarding?.base_price) || 0;
+  const totalPrice = pricePerDay * days;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -92,35 +93,42 @@ export default function HoardingDetails() {
           {/* Image Gallery */}
           <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
             <img
-              src={hoarding.image}
+              src={hoarding.image_path[activeImage]}
               alt={hoarding.title}
               className="w-full aspect-[16/9] object-cover"
             />
           </div>
 
-          {/* Thumbnails placeholder */}
-          <div className="grid grid-cols-4 gap-3">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="aspect-square rounded-xl bg-gray-100 overflow-hidden border-2 border-transparent hover:border-primary-300 transition-colors cursor-pointer"
-              >
-                <img
-                  src={hoarding.image}
-                  alt=""
-                  className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity"
-                />
-              </div>
-            ))}
-          </div>
+          {/* Thumbnails */}
+          {hoarding.image_path.length > 1 && (
+            <div className="grid grid-cols-4 gap-3">
+              {hoarding.image_path.map((src, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveImage(i)}
+                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-colors ${
+                    activeImage === i
+                      ? "border-primary-500"
+                      : "border-transparent hover:border-primary-300"
+                  }`}
+                >
+                  <img
+                    src={src}
+                    alt={`View ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Details */}
           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">
               {hoarding.title}
             </h1>
-            <p className="text-gray-500 leading-relaxed mb-6">
-              {hoarding.description}
+            <p className="text-sm text-gray-400 mb-4">
+              Code: {hoarding.hoarding_code}
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -128,22 +136,22 @@ export default function HoardingDetails() {
                 {
                   icon: HiOutlineLocationMarker,
                   label: "Location",
-                  value: hoarding.location,
+                  value: `${hoarding.address1}, ${hoarding.city_name}`,
                 },
                 {
                   icon: HiOutlineEye,
-                  label: "Visibility",
-                  value: hoarding.visibility,
+                  label: "Visibility Score",
+                  value: `${hoarding.visibility_score} / 10`,
                 },
                 {
                   icon: HiOutlineLightningBolt,
                   label: "Traffic",
-                  value: hoarding.traffic,
+                  value: hoarding.traffic?.name,
                 },
                 {
                   icon: HiOutlineClock,
-                  label: "Impressions/Day",
-                  value: hoarding.impressionsPerDay,
+                  label: "Road Type",
+                  value: hoarding.road?.name,
                 },
               ].map((d) => (
                 <div key={d.label} className="bg-gray-50 rounded-xl p-4">
@@ -165,7 +173,9 @@ export default function HoardingDetails() {
             <div className="bg-gray-100 rounded-xl h-64 flex items-center justify-center">
               <div className="text-center">
                 <HiOutlineLocationMarker className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                <p className="text-gray-400 text-sm">{hoarding.location}</p>
+                <p className="text-gray-400 text-sm">
+                  {hoarding.address1}, {hoarding.city_name}
+                </p>
                 <p className="text-gray-300 text-xs mt-1">
                   Map integration coming soon
                 </p>
@@ -196,7 +206,7 @@ export default function HoardingDetails() {
                 },
                 {
                   icon: HiOutlineShieldCheck,
-                  text: "50% payment only — remaining 50% after you confirm proof",
+                  text: "Transparent per-day pricing — pay only for the days you book",
                 },
               ].map((item) => (
                 <div key={item.text} className="flex items-start gap-3">
@@ -218,13 +228,13 @@ export default function HoardingDetails() {
               Real installations at this and similar locations
             </p>
             <div className="grid grid-cols-3 gap-3">
-              {mockHoardings.slice(0, 3).map((h, i) => (
+              {hoarding.image_path.slice(0, 3).map((src, i) => (
                 <div
                   key={i}
                   className="aspect-square rounded-xl overflow-hidden bg-gray-100"
                 >
                   <img
-                    src={h.image}
+                    src={src}
                     alt={`Campaign proof ${i + 1}`}
                     className="w-full h-full object-cover"
                   />
@@ -245,11 +255,19 @@ export default function HoardingDetails() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <p className="text-xs text-gray-400 uppercase tracking-wide">
-                    Price
+                    Price / day
                   </p>
                   <p className="text-3xl font-bold text-primary-600">
-                    {formatPrice(hoarding.price)}
+                    {formatPrice(hoarding.base_price)}
+                    <span className="text-base font-normal text-gray-400 ml-1">
+                      /day
+                    </span>
                   </p>
+                  {hoarding.comparable_price && (
+                    <p className="text-sm text-gray-400 line-through mt-0.5">
+                      {formatPrice(hoarding.comparable_price)}/day
+                    </p>
+                  )}
                 </div>
                 <span className="text-xs font-semibold bg-green-50 text-green-600 px-3 py-1 rounded-full">
                   Available
@@ -270,116 +288,72 @@ export default function HoardingDetails() {
                 </div>
               </div>
 
-              {/* Payment Breakdown */}
+              {/* Days selector + price breakdown */}
               <div className="bg-gray-50 rounded-xl p-4 mb-5 border border-gray-100">
-                <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2.5">
-                  Payment Breakdown
+                <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-3">
+                  Booking Duration
                 </p>
+                <div className="flex items-center gap-3 mb-4">
+                  <label className="text-sm text-gray-500 whitespace-nowrap">
+                    Number of days
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    value={days}
+                    onChange={(e) =>
+                      setDays(Math.max(1, parseInt(e.target.value) || 1))
+                    }
+                    className="w-24 border border-gray-200 rounded-lg px-3 py-1.5 text-sm font-medium text-gray-900 text-center focus:outline-none focus:ring-2 focus:ring-primary-300"
+                  />
+                </div>
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Ad Placement</span>
+                    <span className="text-gray-500">Rate</span>
                     <span className="font-medium text-gray-900">
-                      {formatPrice(hoarding.price)}
+                      {formatPrice(hoarding.base_price)} / day
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Duration</span>
+                    <span className="font-medium text-gray-900">
+                      {days} {days === 1 ? "day" : "days"}
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Platform Fee</span>
-                    <span className="font-medium text-gray-900 flex items-center gap-1.5">
-                      <span className="line-through text-gray-400">
-                        {formatPrice(Math.round(hoarding.price * 0.05))}
-                      </span>
-                      <span className="text-green-600 font-bold">FREE</span>
-                    </span>
+                    <span className="font-bold text-green-600">FREE</span>
                   </div>
                   <div className="border-t border-gray-200 pt-1.5 flex justify-between text-sm font-bold">
                     <span className="text-gray-900">Total</span>
                     <span className="text-primary-600">
-                      {formatPrice(hoarding.price)}
+                      {formatPrice(totalPrice)}
                     </span>
                   </div>
                 </div>
-                <div className="mt-3 rounded-lg overflow-hidden border border-gray-200">
-                  <div className="flex">
-                    <div className="flex-1 bg-primary-50 px-3 py-2 text-center border-r border-gray-200">
-                      <p className="text-xs text-primary-600 font-semibold">
-                        Pay to Book
-                      </p>
-                      <p className="text-sm font-bold text-primary-700 mt-0.5">
-                        {formatPrice(Math.round(hoarding.price * 0.5))}
-                      </p>
-                      <p className="text-[10px] text-primary-400 mt-0.5">
-                        50% upfront
-                      </p>
-                    </div>
-                    <div className="flex-1 bg-green-50 px-3 py-2 text-center">
-                      <p className="text-xs text-green-600 font-semibold">
-                        After Proof
-                      </p>
-                      <p className="text-sm font-bold text-green-700 mt-0.5">
-                        {formatPrice(Math.round(hoarding.price * 0.5))}
-                      </p>
-                      <p className="text-[10px] text-green-400 mt-0.5">
-                        50% on confirmation
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-400 mt-2.5 text-center leading-relaxed">
-                  🔒 2nd payment released only after you confirm installation
-                  proof via WhatsApp/SMS
-                </p>
               </div>
 
-              {/* Quote / Book Form */}
-              {quoteRequested ? (
-                <div className="space-y-3">
-                  <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
-                    <p className="text-green-700 font-bold text-base">
-                      🎉 Quote request sent!
-                    </p>
-                    <p className="text-green-600 text-sm mt-1 leading-relaxed">
-                      You'll receive your detailed quote via{" "}
-                      <strong>SMS &amp; WhatsApp</strong> shortly.
-                    </p>
-                  </div>
-                  <div className="bg-blue-50 border border-blue-100 rounded-xl p-4">
-                    <p className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-2">
-                      🔔 What Happens Next
-                    </p>
-                    <ul className="space-y-2">
-                      {[
-                        "Review your quote with full pricing details",
-                        "Pay 50% to confirm your booking",
-                        "Ad installed with photo & video proof sent to you",
-                        "Approve the installation, then pay remaining 50%",
-                      ].map((line) => (
-                        <li
-                          key={line}
-                          className="flex items-start gap-2 text-sm text-blue-700"
-                        >
-                          <span className="flex-shrink-0 mt-0.5">✓</span>
-                          <span>{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <button
-                    onClick={() => setQuoteRequested(false)}
-                    className="w-full text-sm text-primary-600 hover:text-primary-700 font-medium py-2"
-                  >
-                    Request another quote
+              {/* CTA */}
+              {isLoggedIn ? (
+                <div>
+                  <button className="w-full btn-primary text-lg py-3.5">
+                    Book this Slot
                   </button>
+                  <p className="text-xs text-gray-400 text-center mt-3">
+                    {days} {days === 1 ? "day" : "days"} ·{" "}
+                    {formatPrice(totalPrice)} total
+                  </p>
                 </div>
               ) : (
                 <div>
-                  <button
-                    onClick={handleGetQuote}
-                    className="w-full btn-primary text-lg py-3.5"
+                  <Link
+                    to="/login"
+                    className="w-full btn-primary text-lg py-3.5 flex items-center justify-center"
                   >
-                    Get a Quote
-                  </button>
+                    Login to Book
+                  </Link>
                   <p className="text-xs text-gray-400 text-center mt-3">
-                    No commitment — review your quote before paying
+                    Login as an advertiser to book this slot
                   </p>
                 </div>
               )}
@@ -392,16 +366,16 @@ export default function HoardingDetails() {
               </h3>
               <div className="space-y-3">
                 {[
-                  { label: "Size", value: hoarding.size },
                   {
-                    label: "Lighting",
-                    value: hoarding.lit ? "Yes — Illuminated" : "No",
+                    label: "Size",
+                    value: `${hoarding.width}ft × ${hoarding.height}ft`,
                   },
-                  { label: "City", value: hoarding.city },
                   {
-                    label: "Daily Views",
-                    value: hoarding.views.toLocaleString("en-IN"),
+                    label: "Facing",
+                    value: hoarding.facing_direction?.name,
                   },
+                  { label: "City", value: hoarding.city_name },
+                  { label: "Hoarding Code", value: hoarding.hoarding_code },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -448,7 +422,7 @@ export default function HoardingDetails() {
                   },
                   {
                     icon: HiOutlineCheckCircle,
-                    text: "50% upfront · 50% after you confirm proof",
+                    text: "Transparent per-day billing — book for any number of days",
                     color: "text-emerald-500",
                   },
                 ].map((item) => (

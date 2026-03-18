@@ -1,68 +1,87 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { HiOutlineFilter, HiOutlineSearch } from "react-icons/hi";
 import HoardingCard from "../components/HoardingCard";
 import { getHoardings } from "../utils/api";
-import mockHoardings, {
-  cities as mockCities,
-  trafficLevels,
-} from "../data/hoardings";
 
-const priceRanges = [
-  { label: "All Prices", min: 0, max: Infinity },
-  { label: "Under ₹30,000", min: 0, max: 30000 },
-  { label: "₹30,000 – ₹70,000", min: 30000, max: 70000 },
-  { label: "₹70,000 – ₹1,00,000", min: 70000, max: 100000 },
-  { label: "Above ₹1,00,000", min: 100000, max: Infinity },
-];
+const LIMIT = 10;
 
 export default function Hoardings() {
   const [hoardingsList, setHoardingsList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [cities, setCities] = useState(mockCities);
-  const [city, setCity] = useState("");
-  const [traffic, setTraffic] = useState("");
-  const [priceIdx, setPriceIdx] = useState(0);
+  const [loadingInitial, setLoadingInitial] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [pagination, setPagination] = useState({
+    total: 0,
+    totalPages: 1,
+    currentPage: 1,
+    hasNextPage: false,
+  });
 
-  useEffect(() => {
-    // TODO: Replace mock fallback with real data once API is connected
-    getHoardings()
+  const sentinelRef = useRef(null);
+  const isFetchingRef = useRef(false);
+
+  const fetchPage = useCallback((page, isInitial = false) => {
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+    if (isInitial) setLoadingInitial(true);
+    else setLoadingMore(true);
+    setError(null);
+
+    getHoardings(page, LIMIT)
       .then((res) => {
-        setHoardingsList(res.data);
-        setCities([...new Set(res.data.map((h) => h.city))]);
+        const { hoardings, pagination: pg } = res.data.data;
+        setHoardingsList((prev) =>
+          isInitial ? hoardings : [...prev, ...hoardings],
+        );
+        setPagination(pg);
       })
-      .catch(() => {
-        setHoardingsList(mockHoardings);
-        setCities(mockCities);
-      })
-      .finally(() => setLoading(false));
+      .catch(() => setError("Failed to load hoardings. Please try again."))
+      .finally(() => {
+        isFetchingRef.current = false;
+        if (isInitial) setLoadingInitial(false);
+        else setLoadingMore(false);
+      });
   }, []);
 
-  const filtered = useMemo(() => {
-    const range = priceRanges[priceIdx];
-    return hoardingsList.filter((h) => {
-      if (city && h.city !== city) return false;
-      if (traffic && h.traffic !== traffic) return false;
-      if (h.price < range.min || h.price > range.max) return false;
-      if (search) {
+  // Initial load
+  useEffect(() => {
+    fetchPage(1, true);
+  }, [fetchPage]);
+
+  // IntersectionObserver — fires when sentinel scrolls into view
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          pagination.hasNextPage &&
+          !isFetchingRef.current
+        ) {
+          fetchPage(pagination.currentPage + 1, false);
+        }
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [pagination.hasNextPage, pagination.currentPage, fetchPage]);
+
+  const filtered = search
+    ? hoardingsList.filter((h) => {
         const q = search.toLowerCase();
         return (
           h.title.toLowerCase().includes(q) ||
-          h.location.toLowerCase().includes(q) ||
-          h.city.toLowerCase().includes(q)
+          h.address1.toLowerCase().includes(q) ||
+          h.city_name.toLowerCase().includes(q)
         );
-      }
-      return true;
-    });
-  }, [city, traffic, priceIdx, search, hoardingsList]);
-
-  const clearFilters = () => {
-    setCity("");
-    setTraffic("");
-    setPriceIdx(0);
-    setSearch("");
-  };
+      })
+    : hoardingsList;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -72,8 +91,7 @@ export default function Hoardings() {
           Explore Hoardings
         </h1>
         <p className="text-gray-500 mt-2 text-lg">
-          Browse premium billboard location
-          {hoardingsList.length !== 1 ? "s" : ""} in Bangalore
+          Browse premium billboard locations in Bangalore
         </p>
       </div>
 
@@ -83,7 +101,7 @@ export default function Hoardings() {
           <HiOutlineSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search by title, location, or city..."
+            placeholder="Search by title, address, or city..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input-field pl-11"
@@ -98,74 +116,19 @@ export default function Hoardings() {
         </button>
       </div>
 
-      {/* Filters panel */}
+      {/* Filters panel — coming soon */}
       {showFilters && (
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-8 shadow-sm animate-fade-in">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                City
-              </label>
-              <select
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="input-field"
-              >
-                <option value="">All Cities</option>
-                {cities.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Traffic Level
-              </label>
-              <select
-                value={traffic}
-                onChange={(e) => setTraffic(e.target.value)}
-                className="input-field"
-              >
-                <option value="">All Levels</option>
-                {trafficLevels.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Price Range
-              </label>
-              <select
-                value={priceIdx}
-                onChange={(e) => setPriceIdx(Number(e.target.value))}
-                className="input-field"
-              >
-                {priceRanges.map((r, i) => (
-                  <option key={r.label} value={i}>
-                    {r.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <button
-            onClick={clearFilters}
-            className="mt-4 text-sm text-primary-600 hover:text-primary-700 font-medium"
-          >
-            Clear all filters
-          </button>
+          <p className="text-sm text-gray-400">
+            Server-side filters (city, traffic, price) coming soon.
+          </p>
         </div>
       )}
 
-      {/* Results */}
-      {loading ? (
+      {/* Initial skeleton */}
+      {loadingInitial ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
               className="bg-white rounded-2xl border border-gray-100 overflow-hidden animate-pulse"
@@ -179,10 +142,21 @@ export default function Hoardings() {
             </div>
           ))}
         </div>
+      ) : error && hoardingsList.length === 0 ? (
+        <div className="text-center py-20">
+          <p className="text-red-500 text-lg">{error}</p>
+          <button
+            onClick={() => fetchPage(1, true)}
+            className="mt-4 text-primary-600 hover:text-primary-700 font-medium text-sm"
+          >
+            Retry
+          </button>
+        </div>
       ) : filtered.length > 0 ? (
         <>
           <p className="text-sm text-gray-400 mb-4">
-            Showing {filtered.length} hoarding{filtered.length !== 1 && "s"}
+            Showing {filtered.length} of {pagination.total} hoarding
+            {pagination.total !== 1 && "s"}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((h) => (
@@ -192,17 +166,30 @@ export default function Hoardings() {
         </>
       ) : (
         <div className="text-center py-20">
-          <p className="text-gray-400 text-lg">
-            No hoardings match your filters.
-          </p>
-          <button
-            onClick={clearFilters}
-            className="mt-4 text-primary-600 hover:text-primary-700 font-medium text-sm"
-          >
-            Clear filters to see all
-          </button>
+          <p className="text-gray-400 text-lg">No hoardings found.</p>
         </div>
       )}
+
+      {/* Sentinel — observed to trigger next page load */}
+      <div ref={sentinelRef} className="h-1" />
+
+      {/* Load-more spinner */}
+      {loadingMore && (
+        <div className="flex justify-center py-8">
+          <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin" />
+        </div>
+      )}
+
+      {/* End of results */}
+      {!loadingInitial &&
+        !loadingMore &&
+        !pagination.hasNextPage &&
+        hoardingsList.length > 0 && (
+          <p className="text-center text-sm text-gray-300 py-8">
+            You've seen all {pagination.total} hoarding
+            {pagination.total !== 1 && "s"}
+          </p>
+        )}
     </div>
   );
 }
