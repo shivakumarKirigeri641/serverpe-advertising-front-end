@@ -27,7 +27,7 @@ export default function HoardingCard({ hoarding }) {
     ? hoarding.image_path[0]
     : hoarding.image_path;
 
-  const sizeLabel = `${hoarding.width}ft x ${hoarding.height}ft`;
+  const sizeLabel = `${hoarding.width_feet}ft x ${hoarding.height_feet}ft`;
 
   return (
     <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
@@ -35,7 +35,7 @@ export default function HoardingCard({ hoarding }) {
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
           src={imageUrl}
-          alt={hoarding.title}
+          alt={hoarding.hoarding_title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
         />
@@ -57,12 +57,12 @@ export default function HoardingCard({ hoarding }) {
       {/* Content */}
       <div className="p-5">
         <h3 className="font-semibold text-gray-900 text-lg group-hover:text-primary-600 transition-colors">
-          {hoarding.title}
+          {hoarding.hoarding_title}
         </h3>
 
         <div className="flex items-center gap-1.5 mt-2 text-sm text-gray-500">
           <HiOutlineLocationMarker className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          {hoarding.address1}, {hoarding.city_name}
+          {hoarding.address1}, {hoarding.city}
         </div>
 
         <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
@@ -72,7 +72,7 @@ export default function HoardingCard({ hoarding }) {
 
         <div className="flex items-center gap-1.5 mt-1 text-sm text-gray-500">
           <HiOutlineEye className="w-4 h-4 text-gray-400 flex-shrink-0" />
-          Visibility score: {hoarding.visibility_score}/10
+          Visibility score: {hoarding.total_visibility_score}/10
         </div>
 
         <div className="mt-3">
@@ -87,7 +87,7 @@ export default function HoardingCard({ hoarding }) {
               Price / day
             </p>
             <p className="text-lg font-bold text-primary-600">
-              {formatPrice(hoarding.base_price)}
+              {formatPrice(hoarding.price_per_day)}
               <span className="text-xs font-normal text-gray-400 ml-1">
                 /day
               </span>

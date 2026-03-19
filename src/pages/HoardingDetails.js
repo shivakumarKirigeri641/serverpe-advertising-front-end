@@ -73,7 +73,7 @@ export default function HoardingDetails() {
     );
   }
 
-  const pricePerDay = Number(hoarding?.base_price) || 0;
+  const pricePerDay = Number(hoarding?.price_per_day) || 0;
   const totalPrice = pricePerDay * days;
 
   return (
@@ -94,7 +94,7 @@ export default function HoardingDetails() {
           <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
             <img
               src={hoarding.image_path[activeImage]}
-              alt={hoarding.title}
+              alt={hoarding.hoarding_title}
               className="w-full aspect-[16/9] object-cover"
             />
           </div>
@@ -125,7 +125,7 @@ export default function HoardingDetails() {
           {/* Details */}
           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
             <h1 className="text-2xl font-bold text-gray-900 mb-1">
-              {hoarding.title}
+              {hoarding.hoarding_title}
             </h1>
             <p className="text-sm text-gray-400 mb-4">
               Code: {hoarding.hoarding_code}
@@ -136,12 +136,12 @@ export default function HoardingDetails() {
                 {
                   icon: HiOutlineLocationMarker,
                   label: "Location",
-                  value: `${hoarding.address1}, ${hoarding.city_name}`,
+                  value: `${hoarding.address1}, ${hoarding.city}`,
                 },
                 {
                   icon: HiOutlineEye,
                   label: "Visibility Score",
-                  value: `${hoarding.visibility_score} / 10`,
+                  value: `${hoarding.total_visibility_score} / 10`,
                 },
                 {
                   icon: HiOutlineLightningBolt,
@@ -174,7 +174,7 @@ export default function HoardingDetails() {
               <div className="text-center">
                 <HiOutlineLocationMarker className="w-10 h-10 text-gray-300 mx-auto mb-2" />
                 <p className="text-gray-400 text-sm">
-                  {hoarding.address1}, {hoarding.city_name}
+                  {hoarding.address1}, {hoarding.city}
                 </p>
                 <p className="text-gray-300 text-xs mt-1">
                   Map integration coming soon
@@ -258,7 +258,7 @@ export default function HoardingDetails() {
                     Price / day
                   </p>
                   <p className="text-3xl font-bold text-primary-600">
-                    {formatPrice(hoarding.base_price)}
+                    {formatPrice(hoarding.price_per_day)}
                     <span className="text-base font-normal text-gray-400 ml-1">
                       /day
                     </span>
@@ -311,7 +311,7 @@ export default function HoardingDetails() {
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">Rate</span>
                     <span className="font-medium text-gray-900">
-                      {formatPrice(hoarding.base_price)} / day
+                      {formatPrice(hoarding.price_per_day)} / day
                     </span>
                   </div>
                   <div className="flex justify-between text-sm">
@@ -368,13 +368,13 @@ export default function HoardingDetails() {
                 {[
                   {
                     label: "Size",
-                    value: `${hoarding.width}ft × ${hoarding.height}ft`,
+                    value: `${hoarding.width_feet}ft × ${hoarding.height_feet}ft`,
                   },
                   {
                     label: "Facing",
                     value: hoarding.facing_direction?.name,
                   },
-                  { label: "City", value: hoarding.city_name },
+                  { label: "City", value: hoarding.city },
                   { label: "Hoarding Code", value: hoarding.hoarding_code },
                 ].map((item) => (
                   <div

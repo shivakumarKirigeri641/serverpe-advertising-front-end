@@ -32,6 +32,7 @@ export default function Hoardings() {
     getHoardings(page, LIMIT)
       .then((res) => {
         const { hoardings, pagination: pg } = res.data.data;
+        console.log(res.data.data);
         setHoardingsList((prev) =>
           isInitial ? hoardings : [...prev, ...hoardings],
         );
@@ -76,9 +77,9 @@ export default function Hoardings() {
     ? hoardingsList.filter((h) => {
         const q = search.toLowerCase();
         return (
-          h.title.toLowerCase().includes(q) ||
+          h.hoarding_title.toLowerCase().includes(q) ||
           h.address1.toLowerCase().includes(q) ||
-          h.city_name.toLowerCase().includes(q)
+          h.city.toLowerCase().includes(q)
         );
       })
     : hoardingsList;
