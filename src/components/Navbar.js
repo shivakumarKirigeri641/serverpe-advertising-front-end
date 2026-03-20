@@ -48,9 +48,12 @@ export default function Navbar() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <button className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors px-4 py-2">
-              Login
-            </button>
+            <Link
+              to="/advertiser/login"
+              className="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors px-4 py-2"
+            >
+              Login to Book
+            </Link>
             <Link
               to="/hoardings"
               className="text-sm font-semibold bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
@@ -86,9 +89,13 @@ export default function Navbar() {
               </NavLink>
             ))}
             <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
-              <button className="text-sm font-medium text-gray-600 py-2">
-                Login
-              </button>
+              <Link
+                to="/advertiser/login"
+                onClick={() => setOpen(false)}
+                className="text-sm font-medium text-gray-600 py-2"
+              >
+                Login to Book
+              </Link>
               <Link
                 to="/hoardings"
                 onClick={() => setOpen(false)}

@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect, useState } from "react";
 
 import Navbar from "./components/Navbar";
+import AdvertiserNavbar from "./components/AdvertiserNavbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import Home from "./pages/Home";
@@ -12,6 +14,11 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Booking from "./pages/Booking";
+import CheckoutSummary from "./pages/CheckoutSummary";
+import { getStoredAdvertiserData } from "./utils/authApi";
 
 function WhatsAppButton() {
   return (
@@ -31,11 +38,23 @@ function WhatsAppButton() {
 }
 
 function App() {
+  const [advertiser, setAdvertiser] = useState(null);
+
+  useEffect(() => {
+    // Check if advertiser is logged in
+    const advertiserData = getStoredAdvertiserData();
+    setAdvertiser(advertiserData);
+  }, []);
+
+  const location = window.location.pathname;
+  const isLoginPage = location === "/advertiser/login";
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        {/* Show appropriate navbar based on auth status */}
+        {!isLoginPage && (advertiser ? <AdvertiserNavbar /> : <Navbar />)}
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -45,10 +64,17 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/advertiser/login" element={<Login />} />
+            <Route path="/advertiser/dashboard" element={<Dashboard />} />
+            <Route
+              path="/advertiser/booking/checkout"
+              element={<CheckoutSummary />}
+            />
+            <Route path="/advertiser/booking/:id" element={<Booking />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
-        <Footer />
+        {!isLoginPage && <Footer />}
       </div>
       <ToastContainer
         position="top-right"

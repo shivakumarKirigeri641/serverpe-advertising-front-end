@@ -5,6 +5,7 @@ const BASE_URL = "http://localhost:7777";
 const api = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
+  withCredentials: true, // Send cookies with requests
   headers: { "Content-Type": "application/json" },
 });
 
@@ -12,6 +13,12 @@ const api = axios.create({
 export const getHoardings = (page = 1, limit = 10) =>
   api.get("/advertising/hoardings", { params: { page, limit } });
 export const getHoardingById = (id) => api.get(`/advertising/hoardings/${id}`);
+export const getHoardingByIdAuthenticated = (id) =>
+  api.get(`/advertising/credentials/hoardings/${id}`);
+export const getHoardingBookingDetails = (id) =>
+  api.get(`/advertising/credentials/hoardingsbooking/${id}`);
+export const bookHoardingSlot = (bookingData) =>
+  api.post(`/advertising/credentials/bookhoardingslot`, bookingData);
 
 // Contact / general endpoints
 export const getQueryTypes = () => api.get("/advertising/campaigns/query-type");

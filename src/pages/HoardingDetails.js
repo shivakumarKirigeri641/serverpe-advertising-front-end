@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   HiOutlineLocationMarker,
   HiOutlineEye,
@@ -11,7 +11,8 @@ import {
   HiOutlineCheckCircle,
   HiOutlinePhotograph,
 } from "react-icons/hi";
-import { getHoardingById } from "../utils/api";
+import { getHoardingById, getHoardingByIdAuthenticated } from "../utils/api";
+import { getStoredAdvertiserData } from "../utils/authApi";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-IN", {
@@ -23,25 +24,33 @@ function formatPrice(price) {
 
 export default function HoardingDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [hoarding, setHoarding] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeImage, setActiveImage] = useState(0);
   const [days, setDays] = useState(1);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [advertiser, setAdvertiser] = useState(null);
 
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("advertiser_id"));
+    const advertiserData = getStoredAdvertiserData();
+    setAdvertiser(advertiserData);
   }, []);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
-    getHoardingById(id)
+
+    // Use authenticated endpoint if advertiser is logged in
+    const fetchHoarding = advertiser
+      ? getHoardingByIdAuthenticated(id)
+      : getHoardingById(id);
+
+    fetchHoarding
       .then((res) => setHoarding(res.data.data))
       .catch(() => setError("Failed to load hoarding details."))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, advertiser]);
 
   if (loading) {
     return (
@@ -222,28 +231,36 @@ export default function HoardingDetails() {
           {/* Proof of Past Campaigns */}
           <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
             <h3 className="font-semibold text-gray-900 mb-1">
-              Proof of Past Campaigns
+              Real Installations
             </h3>
             <p className="text-sm text-gray-400 mb-4">
-              Real installations at this and similar locations
+              Proof of past campaigns at this location
             </p>
-            <div className="grid grid-cols-3 gap-3">
-              {hoarding.image_path.slice(0, 3).map((src, i) => (
-                <div
-                  key={i}
-                  className="aspect-square rounded-xl overflow-hidden bg-gray-100"
-                >
-                  <img
-                    src={src}
-                    alt={`Campaign proof ${i + 1}`}
-                    className="w-full h-full object-cover"
-                  />
+            {hoarding.ad_image_path && hoarding.ad_image_path.length > 0 ? (
+              <>
+                <div className="grid grid-cols-3 gap-3">
+                  {hoarding.ad_image_path.slice(0, 6).map((src, i) => (
+                    <div
+                      key={i}
+                      className="aspect-square rounded-xl overflow-hidden bg-gray-100"
+                    >
+                      <img
+                        src={src}
+                        alt={`Installation ${i + 1}`}
+                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <p className="text-xs text-gray-400 mt-3 text-center italic">
-              Sample installations — actual photo proof sent upon booking
-            </p>
+                <p className="text-xs text-gray-400 mt-3 text-center italic">
+                  Real installations from actual campaigns at this location
+                </p>
+              </>
+            ) : (
+              <p className="text-xs text-gray-400 text-center py-8 italic">
+                No installation photos available yet
+              </p>
+            )}
           </div>
         </div>
 
@@ -300,6 +317,7 @@ export default function HoardingDetails() {
                   <input
                     type="number"
                     min={1}
+                    max={100}
                     value={days}
                     onChange={(e) =>
                       setDays(Math.max(1, parseInt(e.target.value) || 1))
@@ -334,9 +352,12 @@ export default function HoardingDetails() {
               </div>
 
               {/* CTA */}
-              {isLoggedIn ? (
+              {advertiser ? (
                 <div>
-                  <button className="w-full btn-primary text-lg py-3.5">
+                  <button
+                    onClick={() => navigate(`/advertiser/booking/${id}`)}
+                    className="w-full btn-primary text-lg py-3.5"
+                  >
                     Book this Slot
                   </button>
                   <p className="text-xs text-gray-400 text-center mt-3">
@@ -347,7 +368,7 @@ export default function HoardingDetails() {
               ) : (
                 <div>
                   <Link
-                    to="/login"
+                    to="/advertiser/login"
                     className="w-full btn-primary text-lg py-3.5 flex items-center justify-center"
                   >
                     Login to Book

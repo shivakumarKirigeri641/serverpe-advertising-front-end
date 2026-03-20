@@ -4,6 +4,7 @@ import {
   HiOutlineTrendingUp,
   HiOutlineBadgeCheck,
   HiOutlineEye,
+  HiOutlinePhotograph,
 } from "react-icons/hi";
 
 export default function HoardingCard({ hoarding }) {
@@ -23,14 +24,22 @@ export default function HoardingCard({ hoarding }) {
     "Very High Traffic": "bg-red-100 text-red-700",
   };
 
-  const imageUrl = Array.isArray(hoarding.image_path)
-    ? hoarding.image_path[0]
-    : hoarding.image_path;
+  const imageUrl = Array.isArray(hoarding.sample_image_path)
+    ? hoarding.sample_image_path[0]
+    : hoarding.sample_image_path ||
+      "https://via.placeholder.com/400x300?text=No+Image";
 
   const sizeLabel = `${hoarding.width_feet}ft x ${hoarding.height_feet}ft`;
 
+  const adImages = Array.isArray(hoarding.ad_image_path)
+    ? hoarding.ad_image_path.slice(0, 3)
+    : [];
+
   return (
-    <div className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300">
+    <Link
+      to={`/hoardings/${hoarding.id}`}
+      className="group block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 cursor-pointer"
+    >
       {/* Image */}
       <div className="relative overflow-hidden aspect-[4/3]">
         <img
@@ -98,14 +107,34 @@ export default function HoardingCard({ hoarding }) {
               </p>
             )}
           </div>
-          <Link
-            to={`/hoardings/${hoarding.id}`}
-            className="text-sm font-medium bg-primary-50 text-primary-600 hover:bg-primary-600 hover:text-white px-4 py-2 rounded-lg transition-all duration-200"
-          >
+          <button className="text-sm font-medium bg-primary-50 text-primary-600 hover:bg-primary-600 hover:text-white px-4 py-2 rounded-lg transition-all duration-200">
             View Details
-          </Link>
+          </button>
         </div>
+
+        {/* Real Installations Section */}
+        {adImages.length > 0 && (
+          <div className="mt-6 pt-6 border-t border-gray-50">
+            <div className="flex items-center gap-2 mb-3">
+              <HiOutlinePhotograph className="w-4 h-4 text-gray-600" />
+              <h4 className="text-sm font-semibold text-gray-700">
+                Real installations at this location
+              </h4>
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              {adImages.map((imgUrl, idx) => (
+                <div key={idx} className="rounded-lg overflow-hidden">
+                  <img
+                    src={imgUrl}
+                    alt={`Installation ${idx + 1}`}
+                    className="w-full h-20 object-cover hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </Link>
   );
 }
