@@ -18,7 +18,7 @@ export default function Login() {
   const navigate = useNavigate();
   const [step, setStep] = useState("phone"); // phone, otp, business-select
   const [loading, setLoading] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("9000000001");
+  const [phoneNumber, setPhoneNumber] = useState("9000000002");
   const [otp, setOtp] = useState("1234");
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);

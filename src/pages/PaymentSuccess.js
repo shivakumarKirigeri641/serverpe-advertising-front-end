@@ -10,6 +10,7 @@ import {
   HiOutlineDocumentText,
   HiOutlineClipboardCheck,
 } from "react-icons/hi";
+import { storeAdvertiserData } from "../utils/authApi";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-IN", {
@@ -27,6 +28,11 @@ export default function PaymentSuccess() {
   useEffect(() => {
     if (!state || !state.paymentData) {
       navigate("/advertiser/dashboard");
+      return;
+    }
+    // Store advertiser data in localStorage to maintain session
+    if (state.advertiser) {
+      storeAdvertiserData(state.advertiser);
     }
   }, [state, navigate]);
 

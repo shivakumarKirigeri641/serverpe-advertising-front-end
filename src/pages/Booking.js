@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
@@ -8,8 +8,6 @@ import {
   HiOutlineLocationMarker,
   HiOutlineTrendingUp,
   HiOutlineEye,
-  HiOutlineChevronLeft,
-  HiOutlineChevronRight,
 } from "react-icons/hi";
 import { getHoardingBookingDetails, bookHoardingSlot } from "../utils/api";
 import { getStoredAdvertiserData } from "../utils/authApi";
@@ -22,6 +20,8 @@ function formatPrice(price) {
   }).format(Number(price));
 }
 
+const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 export default function Booking() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,11 +30,11 @@ export default function Booking() {
   const [bookingData, setBookingData] = useState(null);
   const [advertiser, setAdvertiser] = useState(null);
 
-  // Calendar state
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [isSelectingRange, setIsSelectingRange] = useState(false);
+  // Range selection: click start, click/drag end
+  const [rangeStart, setRangeStart] = useState(null); // index into flat dates
+  const [rangeEnd, setRangeEnd] = useState(null);
+  const [hoverIdx, setHoverIdx] = useState(null); // preview while selecting
+  const [isDragging, setIsDragging] = useState(false);
   const [isBooking, setIsBooking] = useState(false);
 
   useEffect(() => {
@@ -45,7 +45,6 @@ export default function Booking() {
     }
     setAdvertiser(advertiserData);
 
-    // Fetch booking details
     setLoading(true);
     setError(null);
     getHoardingBookingDetails(id)
@@ -63,145 +62,138 @@ export default function Booking() {
       .finally(() => setLoading(false));
   }, [id, navigate]);
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  // Flat ordered list of all dates from the API
+  const allDates = useMemo(() => {
+    if (!bookingData?.dates) return [];
+    return bookingData.dates;
+  }, [bookingData]);
 
-  const maxDate = new Date();
-  maxDate.setDate(maxDate.getDate() + 59);
-
-  const getDaysInMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  };
-
-  const handleDateClick = (day) => {
-    const clickedDate = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      day,
-    );
-    clickedDate.setHours(0, 0, 0, 0);
-
-    // Check if date is within valid range
-    if (clickedDate < today || clickedDate > maxDate) {
-      return;
-    }
-
-    if (!startDate || (startDate && endDate)) {
-      // Start new selection
-      setStartDate(clickedDate);
-      setEndDate(null);
-      setIsSelectingRange(true);
-    } else {
-      // End selection
-      if (clickedDate < startDate) {
-        // If clicked date is before start, swap them
-        setEndDate(startDate);
-        setStartDate(clickedDate);
-      } else {
-        setEndDate(clickedDate);
+  // Group dates by month for display
+  const datesByMonth = useMemo(() => {
+    if (!allDates.length) return [];
+    const groups = {};
+    allDates.forEach((d) => {
+      const dt = new Date(d.ad_dates);
+      const key = `${dt.getFullYear()}-${dt.getMonth()}`;
+      if (!groups[key]) {
+        groups[key] = {
+          label: dt.toLocaleString("en-IN", { month: "long", year: "numeric" }),
+          dates: [],
+        };
       }
-      setIsSelectingRange(false);
+      groups[key].dates.push(d);
+    });
+    return Object.values(groups);
+  }, [allDates]);
+
+  // Index lookup: date id -> position in flat array
+  const idToIdx = useMemo(() => {
+    const map = {};
+    allDates.forEach((d, i) => (map[d.id] = i));
+    return map;
+  }, [allDates]);
+
+  // Compute the effective range [lo, hi] indices
+  const getRange = useCallback(() => {
+    if (rangeStart === null) return null;
+    const end = rangeEnd !== null ? rangeEnd : hoverIdx;
+    if (end === null) return { lo: rangeStart, hi: rangeStart };
+    const lo = Math.min(rangeStart, end);
+    const hi = Math.max(rangeStart, end);
+    return { lo, hi };
+  }, [rangeStart, rangeEnd, hoverIdx]);
+
+  // Set of selected AVAILABLE date ids within range
+  const selectedIds = useMemo(() => {
+    const range = getRange();
+    if (!range) return new Set();
+    const ids = new Set();
+    for (let i = range.lo; i <= range.hi; i++) {
+      if (allDates[i]?.booking_status === "AVAILABLE") {
+        ids.add(allDates[i].id);
+      }
+    }
+    return ids;
+  }, [getRange, allDates]);
+
+  // Is a date index within the current range (for highlighting)?
+  const isInRange = useCallback(
+    (idx) => {
+      const range = getRange();
+      if (!range) return false;
+      return idx >= range.lo && idx <= range.hi;
+    },
+    [getRange],
+  );
+
+  const handleDateClick = (idx) => {
+    if (allDates[idx]?.booking_status !== "AVAILABLE") return;
+
+    if (rangeStart === null || rangeEnd !== null) {
+      // Start new range
+      setRangeStart(idx);
+      setRangeEnd(null);
+      setIsDragging(true);
+    } else {
+      // Finish range
+      setRangeEnd(idx);
+      setIsDragging(false);
     }
   };
 
-  const isDateInRange = (day) => {
-    if (!startDate || !endDate) return false;
-    const date = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      day,
-    );
-    date.setHours(0, 0, 0, 0);
-    return date >= startDate && date <= endDate;
+  const handleMouseEnter = (idx) => {
+    if (isDragging && rangeStart !== null && rangeEnd === null) {
+      setHoverIdx(idx);
+    }
   };
 
-  const isDateSelected = (day) => {
-    const date = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      day,
-    );
-    date.setHours(0, 0, 0, 0);
-    return (startDate && date.getTime() === startDate.getTime()) ||
-      (endDate && date.getTime() === endDate.getTime())
-      ? true
-      : false;
+  const handleMouseUp = (idx) => {
+    if (isDragging && rangeStart !== null && rangeEnd === null) {
+      setRangeEnd(idx);
+      setIsDragging(false);
+      setHoverIdx(null);
+    }
   };
 
-  const isDateDisabled = (day) => {
-    const date = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      day,
-    );
-    date.setHours(0, 0, 0, 0);
-    return date < today || date > maxDate;
+  const clearSelection = () => {
+    setRangeStart(null);
+    setRangeEnd(null);
+    setHoverIdx(null);
+    setIsDragging(false);
   };
 
-  const calculateDays = () => {
-    if (!startDate || !endDate) return 0;
-    const diffTime = Math.abs(endDate - startDate);
-    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  const selectAllAvailable = () => {
+    // Find first and last available indices
+    let first = -1,
+      last = -1;
+    allDates.forEach((d, i) => {
+      if (d.booking_status === "AVAILABLE") {
+        if (first === -1) first = i;
+        last = i;
+      }
+    });
+    if (first !== -1) {
+      setRangeStart(first);
+      setRangeEnd(last);
+      setIsDragging(false);
+      setHoverIdx(null);
+    }
   };
 
-  const daysCount = calculateDays();
+  // Compute summary values from selected range
+  const rangeInfo = useMemo(() => {
+    const range = getRange();
+    if (!range || selectedIds.size === 0) return null;
+    const firstDate = new Date(allDates[range.lo]?.ad_dates);
+    const lastDate = new Date(allDates[range.hi]?.ad_dates);
+    return { firstDate, lastDate };
+  }, [getRange, selectedIds, allDates]);
+
+  const daysCount = selectedIds.size;
   const totalPrice =
     bookingData && daysCount > 0
       ? Number(bookingData.price_per_day) * daysCount
       : 0;
-
-  const renderCalendar = () => {
-    const days = [];
-    const daysInMonth = getDaysInMonth(currentMonth);
-    const firstDay = getFirstDayOfMonth(currentMonth);
-
-    // Empty cells for days before month starts
-    for (let i = 0; i < firstDay; i++) {
-      days.push(
-        <div
-          key={`empty-${i}`}
-          className="p-2 text-gray-200 text-sm font-medium"
-        />,
-      );
-    }
-
-    // Days of month
-    for (let day = 1; day <= daysInMonth; day++) {
-      const isDisabled = isDateDisabled(day);
-      const isSelected = isDateSelected(day);
-      const inRange = isDateInRange(day);
-
-      days.push(
-        <button
-          key={day}
-          onClick={() => !isDisabled && handleDateClick(day)}
-          disabled={isDisabled}
-          className={`p-2 text-sm font-medium rounded-lg transition-all ${
-            isDisabled
-              ? "text-gray-300 cursor-not-allowed bg-gray-50"
-              : isSelected
-                ? "bg-primary-600 text-white"
-                : inRange
-                  ? "bg-primary-100 text-primary-700"
-                  : "text-gray-700 hover:bg-gray-100"
-          }`}
-        >
-          {day}
-        </button>,
-      );
-    }
-
-    return days;
-  };
-
-  const monthYear = currentMonth.toLocaleString("en-US", {
-    month: "long",
-    year: "numeric",
-  });
 
   if (loading) {
     return (
@@ -211,42 +203,31 @@ export default function Booking() {
     );
   }
 
-  // Check hoarding availability
+  // Check hoarding availability (has dates with AVAILABLE status)
   const isHoardingAvailable =
-    bookingData && bookingData.hoarding_status_name === "AVAILABLE";
-
-  // Get selected booking IDs for date range
-  const getSelectedBookingIds = () => {
-    if (!startDate || !endDate || !bookingData?.dates) return [];
-    return bookingData.dates
-      .filter((dateItem) => {
-        const itemDate = new Date(dateItem.ad_dates);
-        itemDate.setHours(0, 0, 0, 0);
-        return itemDate >= startDate && itemDate <= endDate;
-      })
-      .map((dateItem) => dateItem.id);
-  };
+    bookingData &&
+    bookingData.dates &&
+    bookingData.dates.some((date) => date.booking_status === "AVAILABLE");
 
   const handleProceedBooking = async () => {
-    const bookingIds = getSelectedBookingIds();
-    if (bookingIds.length === 0) {
-      toast.error("Please select dates");
+    if (selectedIds.size === 0) {
+      toast.error("Please select at least one available date");
       return;
     }
 
     setIsBooking(true);
     try {
-      const res = await bookHoardingSlot({ booking_ids: bookingIds });
+      const res = await bookHoardingSlot({
+        hoarding_id: parseInt(id),
+        slots: Array.from(selectedIds),
+      });
       if (res.data.successstatus) {
-        // Navigate to checkout summary with booking data
         navigate("/advertiser/booking/checkout", {
           state: {
-            bookingIds,
+            bookingIds: Array.from(selectedIds),
             bookingReference: res.data.data.booking_reference,
             bookingData,
             advertiser,
-            startDate,
-            endDate,
             daysCount,
             totalPrice,
           },
@@ -450,7 +431,7 @@ export default function Booking() {
               </div>
             </motion.div>
 
-            {/* Calendar Card */}
+            {/* Date Picker Card */}
             <motion.div
               className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
               custom={2}
@@ -458,85 +439,143 @@ export default function Booking() {
               initial="hidden"
               animate="visible"
             >
-              <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <HiOutlineCalendar className="w-5 h-5 text-primary-600" />
-                Select Booking Dates
-              </h3>
-
-              {/* Month Navigation */}
-              <div className="flex items-center justify-between mb-6">
-                <button
-                  onClick={() =>
-                    setCurrentMonth(
-                      new Date(
-                        currentMonth.getFullYear(),
-                        currentMonth.getMonth() - 1,
-                      ),
-                    )
-                  }
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <HiOutlineChevronLeft className="w-5 h-5 text-gray-600" />
-                </button>
-                <h4 className="text-sm font-semibold text-gray-900">
-                  {monthYear}
-                </h4>
-                <button
-                  onClick={() =>
-                    setCurrentMonth(
-                      new Date(
-                        currentMonth.getFullYear(),
-                        currentMonth.getMonth() + 1,
-                      ),
-                    )
-                  }
-                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                >
-                  <HiOutlineChevronRight className="w-5 h-5 text-gray-600" />
-                </button>
-              </div>
-
-              {/* Calendar Grid */}
-              <div className="grid grid-cols-7 gap-2 mb-4">
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
-                  (day) => (
-                    <div
-                      key={day}
-                      className="text-center text-xs font-semibold text-gray-500 py-2"
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <HiOutlineCalendar className="w-5 h-5 text-primary-600" />
+                  Select Dates
+                </h3>
+                <div className="flex gap-2">
+                  <button
+                    onClick={selectAllAvailable}
+                    className="text-xs font-medium text-primary-600 hover:text-primary-700 px-3 py-1.5 rounded-lg border border-primary-200 hover:bg-primary-50 transition-colors"
+                  >
+                    Select All
+                  </button>
+                  {daysCount > 0 && (
+                    <button
+                      onClick={clearSelection}
+                      className="text-xs font-medium text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
                     >
-                      {day}
-                    </div>
-                  ),
-                )}
-                {renderCalendar()}
+                      Clear
+                    </button>
+                  )}
+                </div>
               </div>
 
-              {/* Date Info */}
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm">
-                {startDate && endDate ? (
-                  <div>
-                    <p className="text-blue-800">
-                      <strong>Selected:</strong>{" "}
-                      {startDate.toLocaleDateString("en-IN")} to{" "}
-                      {endDate.toLocaleDateString("en-IN")}
+              <p className="text-xs text-gray-500 mb-4">
+                {rangeStart === null
+                  ? "Click a start date, then click or drag to an end date."
+                  : rangeEnd === null
+                    ? "Now click or drag to your end date."
+                    : "Range selected! Click a new start date to change."}
+              </p>
+
+              {/* Date grid grouped by month */}
+              <div
+                className="space-y-5 max-h-[420px] overflow-y-auto pr-1 select-none"
+                onMouseLeave={() => isDragging && setHoverIdx(null)}
+              >
+                {datesByMonth.map((group) => (
+                  <div key={group.label}>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 sticky top-0 bg-white py-1 z-10">
+                      {group.label}
                     </p>
-                    <p className="text-blue-700 mt-1">
-                      <strong>
-                        {daysCount} day{daysCount !== 1 ? "s" : ""}
-                      </strong>{" "}
-                      selected
-                    </p>
+                    <div className="grid grid-cols-5 sm:grid-cols-7 md:grid-cols-10 gap-1.5">
+                      {group.dates.map((d) => {
+                        const dt = new Date(d.ad_dates);
+                        const idx = idToIdx[d.id];
+                        const isAvailable = d.booking_status === "AVAILABLE";
+                        const inRange = isInRange(idx);
+                        const isStart = idx === rangeStart;
+                        const isEnd =
+                          idx === rangeEnd ||
+                          (rangeEnd === null && idx === hoverIdx);
+
+                        return (
+                          <button
+                            key={d.id}
+                            onMouseDown={(e) => {
+                              e.preventDefault();
+                              handleDateClick(idx);
+                            }}
+                            onMouseEnter={() => handleMouseEnter(idx)}
+                            onMouseUp={() => handleMouseUp(idx)}
+                            onTouchStart={(e) => {
+                              e.preventDefault();
+                              handleDateClick(idx);
+                            }}
+                            disabled={!isAvailable}
+                            className={`flex flex-col items-center justify-center py-2 px-1 rounded-lg text-center transition-all cursor-pointer ${
+                              !isAvailable
+                                ? "bg-red-50 text-red-300 cursor-not-allowed line-through"
+                                : isStart || isEnd
+                                  ? "bg-primary-600 text-white ring-2 ring-primary-400 scale-105"
+                                  : inRange && isAvailable
+                                    ? "bg-primary-100 text-primary-700"
+                                    : "bg-gray-50 text-gray-700 hover:bg-primary-50 hover:text-primary-700"
+                            }`}
+                            title={
+                              !isAvailable
+                                ? "Booked"
+                                : isStart
+                                  ? "Start date"
+                                  : isEnd
+                                    ? "End date"
+                                    : `${dt.getDate()} ${dt.toLocaleString("en-IN", { month: "short" })}`
+                            }
+                          >
+                            <span className="text-[10px] leading-none font-medium opacity-70">
+                              {DAY_NAMES[dt.getDay()]}
+                            </span>
+                            <span className="text-sm font-bold leading-tight mt-0.5">
+                              {dt.getDate()}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
-                ) : startDate ? (
-                  <p className="text-blue-800">
-                    <strong>Start:</strong>{" "}
-                    {startDate.toLocaleDateString("en-IN")} — Select end date
-                  </p>
-                ) : (
-                  <p className="text-blue-700">
-                    Click on a date to start selecting (max 59 days from today)
-                  </p>
-                )}
+                ))}
+              </div>
+
+              {/* Range info */}
+              {rangeInfo && (
+                <div className="mt-4 p-3 bg-primary-50 border border-primary-200 rounded-lg text-sm text-primary-800 flex items-center justify-between">
+                  <span>
+                    <strong>
+                      {rangeInfo.firstDate.toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </strong>
+                    {" → "}
+                    <strong>
+                      {rangeInfo.lastDate.toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                      })}
+                    </strong>
+                  </span>
+                  <span className="font-bold">
+                    {daysCount} day{daysCount !== 1 ? "s" : ""}
+                  </span>
+                </div>
+              )}
+
+              {/* Legend */}
+              <div className="mt-3 flex flex-wrap gap-4 text-[11px] text-gray-500">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded bg-primary-600 inline-block" />
+                  Start / End
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded bg-primary-100 inline-block" />
+                  In Range
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-3 h-3 rounded bg-red-50 border border-red-200 inline-block" />
+                  Booked
+                </span>
               </div>
             </motion.div>
           </div>
@@ -586,7 +625,7 @@ export default function Booking() {
 
                   <button
                     onClick={handleProceedBooking}
-                    disabled={!startDate || !endDate || isBooking}
+                    disabled={selectedIds.size === 0 || isBooking}
                     className="w-full bg-primary-600 text-white font-semibold py-3 rounded-xl hover:bg-primary-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isBooking ? (

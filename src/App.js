@@ -1,4 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
@@ -38,13 +44,24 @@ function WhatsAppButton() {
   );
 }
 
-function App() {
-  const [advertiser, setAdvertiser] = useState(null);
+function AppLayout() {
+  const location = useLocation();
+  const [advertiser, setAdvertiser] = useState(() => getStoredAdvertiserData());
 
+  // Re-check auth on every route change so navbar stays in sync
   useEffect(() => {
-    // Check if advertiser is logged in
-    const advertiserData = getStoredAdvertiserData();
-    setAdvertiser(advertiserData);
+    setAdvertiser(getStoredAdvertiserData());
+  }, [location.pathname]);
+
+  // Also listen for storage changes (e.g. login in another tab)
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === "advertiser_data") {
+        setAdvertiser(getStoredAdvertiserData());
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   // Logout on tab/browser close
@@ -59,11 +76,10 @@ function App() {
     };
   }, []);
 
-  const location = window.location.pathname;
-  const isLoginPage = location === "/advertiser/login";
+  const isLoginPage = location.pathname === "/advertiser/login";
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <div className="flex flex-col min-h-screen">
         {/* Show appropriate navbar based on auth status */}
@@ -102,6 +118,14 @@ function App() {
         theme="light"
       />
       <WhatsAppButton />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
     </BrowserRouter>
   );
 }
