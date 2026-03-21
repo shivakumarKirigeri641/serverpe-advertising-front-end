@@ -51,7 +51,7 @@ export default function CheckoutSummary() {
   const payNowAmount = totalWithGst / 2;
   const remainingAmount = totalWithGst / 2;
 
-  const hoarding = bookingData.hoarding;
+  const hoarding = bookingData;
 
   const handlePaymentClick = () => {
     setIsProcessing(true);
@@ -172,7 +172,7 @@ export default function CheckoutSummary() {
                   <div>
                     <p className="text-xs text-gray-500">Traffic</p>
                     <p className="text-sm font-medium text-gray-900 mt-1">
-                      {hoarding.traffic?.name}
+                      {hoarding.traffic_type_name}
                     </p>
                   </div>
                 </div>

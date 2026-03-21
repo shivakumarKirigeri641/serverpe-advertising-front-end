@@ -150,7 +150,7 @@ export default function Booking() {
   const daysCount = calculateDays();
   const totalPrice =
     bookingData && daysCount > 0
-      ? Number(bookingData.hoarding.price_per_day) * daysCount
+      ? Number(bookingData.price_per_day) * daysCount
       : 0;
 
   const renderCalendar = () => {
@@ -212,7 +212,7 @@ export default function Booking() {
 
   // Check hoarding availability
   const isHoardingAvailable =
-    bookingData && bookingData.hoarding?.hoarding_status_name === "AVAILABLE";
+    bookingData && bookingData.hoarding_status_name === "AVAILABLE";
 
   // Get selected booking IDs for date range
   const getSelectedBookingIds = () => {
@@ -299,7 +299,7 @@ export default function Booking() {
     );
   }
 
-  const hoarding = bookingData.hoarding;
+  const hoarding = bookingData;
 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
@@ -413,7 +413,7 @@ export default function Booking() {
                     <div>
                       <p className="text-xs text-gray-500">Traffic</p>
                       <p className="text-sm font-medium text-gray-900">
-                        {hoarding.traffic?.name}
+                        {hoarding.traffic_type_name}
                       </p>
                     </div>
                   </div>
