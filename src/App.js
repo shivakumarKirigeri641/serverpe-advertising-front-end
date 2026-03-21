@@ -25,6 +25,7 @@ import Dashboard from "./pages/Dashboard";
 import Booking from "./pages/Booking";
 import CheckoutSummary from "./pages/CheckoutSummary";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import BookingAction from "./pages/BookingAction";
 import { getStoredAdvertiserData, sendLogoutBeacon } from "./utils/authApi";
 
 function WhatsAppButton() {
@@ -104,6 +105,10 @@ function AppLayout() {
               element={<PaymentSuccess />}
             />
             <Route path="/advertiser/booking/:id" element={<Booking />} />
+            <Route
+              path="/advertiser/booking/:id/action"
+              element={<BookingAction />}
+            />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

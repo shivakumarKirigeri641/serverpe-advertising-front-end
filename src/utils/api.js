@@ -19,6 +19,8 @@ export const getHoardingBookingDetails = (id) =>
   api.get(`/advertising/credentials/hoardingsbooking/${id}`);
 export const bookHoardingSlot = (bookingData) =>
   api.post(`/advertising/credentials/bookhoardingslot`, bookingData);
+export const getMyHoardings = () =>
+  api.get(`/advertising/credentials/myhoardings`);
 
 // Payment endpoints
 export const createRazorpayOrder = (data) =>

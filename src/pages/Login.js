@@ -92,6 +92,7 @@ export default function Login() {
           businessName: selectedBusiness.business_name,
           phoneNumber: phoneNumber,
           email: selectedBusiness.email,
+          createdAt: selectedBusiness.created_at,
         });
 
         toast.success("Login successful!");
