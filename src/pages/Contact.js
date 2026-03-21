@@ -43,8 +43,20 @@ export default function Contact() {
         {/* Team intro */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
           {[
-            { initials: "SK", name: "Shivakumar Kirigeri", role: "Software Engineer", colorBg: "bg-primary-100", colorText: "text-primary-700" },
-            { initials: "AJ", name: "Amruta Jegarkal", role: "Project Manager", colorBg: "bg-accent-100", colorText: "text-accent-700" },
+            {
+              initials: "SK",
+              name: "Shivakumar Kirigeri",
+              role: "Software Engineer",
+              colorBg: "bg-primary-100",
+              colorText: "text-primary-700",
+            },
+            {
+              initials: "AJ",
+              name: "Amruta Jegarkal",
+              role: "Project Manager",
+              colorBg: "bg-accent-100",
+              colorText: "text-accent-700",
+            },
           ].map((member, i) => (
             <motion.div
               key={member.initials}
@@ -54,11 +66,17 @@ export default function Contact() {
               animate="visible"
               className="flex flex-col items-center bg-gray-50 border border-gray-200 rounded-2xl px-6 py-4 w-full sm:w-56"
             >
-              <div className={`w-12 h-12 rounded-full ${member.colorBg} flex items-center justify-center ${member.colorText} font-bold text-lg mb-2`}>
+              <div
+                className={`w-12 h-12 rounded-full ${member.colorBg} flex items-center justify-center ${member.colorText} font-bold text-lg mb-2`}
+              >
                 {member.initials}
               </div>
-              <p className="font-semibold text-gray-900 text-sm">{member.name}</p>
-              <p className="text-xs text-primary-600 font-medium mt-0.5">{member.role}</p>
+              <p className="font-semibold text-gray-900 text-sm">
+                {member.name}
+              </p>
+              <p className="text-xs text-primary-600 font-medium mt-0.5">
+                {member.role}
+              </p>
               <p className="text-xs text-gray-400 mt-1">13+ yrs experience</p>
             </motion.div>
           ))}

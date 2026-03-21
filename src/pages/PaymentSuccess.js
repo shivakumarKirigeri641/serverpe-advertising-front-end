@@ -57,12 +57,17 @@ export default function PaymentSuccess() {
 
   const bounceIn = {
     hidden: { opacity: 0, scale: 0.6 },
-    visible: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 260, damping: 18, delay: 0.1 } },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { type: "spring", stiffness: 260, damping: 18, delay: 0.1 },
+    },
   };
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
     visible: (i = 0) => ({
-      opacity: 1, y: 0,
+      opacity: 1,
+      y: 0,
       transition: { delay: 0.2 + i * 0.08, duration: 0.45, ease: "easeOut" },
     }),
   };
@@ -80,7 +85,12 @@ export default function PaymentSuccess() {
           >
             <HiOutlineCheckCircle className="w-12 h-12 text-green-600" />
           </motion.div>
-          <motion.div variants={fadeUp} custom={0} initial="hidden" animate="visible">
+          <motion.div
+            variants={fadeUp}
+            custom={0}
+            initial="hidden"
+            animate="visible"
+          >
             <h1 className="text-3xl font-bold text-gray-900">
               Payment Successful!
             </h1>
