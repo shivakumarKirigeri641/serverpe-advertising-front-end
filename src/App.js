@@ -18,7 +18,8 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Booking from "./pages/Booking";
 import CheckoutSummary from "./pages/CheckoutSummary";
-import { getStoredAdvertiserData } from "./utils/authApi";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import { getStoredAdvertiserData, sendLogoutBeacon } from "./utils/authApi";
 
 function WhatsAppButton() {
   return (
@@ -46,6 +47,18 @@ function App() {
     setAdvertiser(advertiserData);
   }, []);
 
+  // Logout on tab/browser close
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sendLogoutBeacon();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   const location = window.location.pathname;
   const isLoginPage = location === "/advertiser/login";
 
@@ -69,6 +82,10 @@ function App() {
             <Route
               path="/advertiser/booking/checkout"
               element={<CheckoutSummary />}
+            />
+            <Route
+              path="/advertiser/booking/payment-success"
+              element={<PaymentSuccess />}
             />
             <Route path="/advertiser/booking/:id" element={<Booking />} />
             <Route path="*" element={<Navigate to="/" replace />} />

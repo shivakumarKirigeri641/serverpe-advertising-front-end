@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   HiOutlineUser,
   HiOutlineCalendar,
@@ -9,6 +10,7 @@ import {
   HiOutlineCheckCircle,
 } from "react-icons/hi";
 import { toast } from "react-toastify";
+import { createRazorpayOrder, verifyRazorpayPayment } from "../utils/api";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-IN", {
@@ -42,8 +44,16 @@ export default function CheckoutSummary() {
     );
   }
 
-  const { bookingData, advertiser, startDate, endDate, daysCount, totalPrice } =
-    state;
+  const {
+    bookingIds,
+    bookingReference,
+    bookingData,
+    advertiser,
+    startDate,
+    endDate,
+    daysCount,
+    totalPrice,
+  } = state;
 
   const baseAmount = totalPrice;
   const gstAmount = baseAmount * GST_RATE;
@@ -53,11 +63,106 @@ export default function CheckoutSummary() {
 
   const hoarding = bookingData;
 
-  const handlePaymentClick = () => {
+  const handlePaymentClick = async () => {
     setIsProcessing(true);
-    // This will integrate with Razorpay or payment gateway
-    toast.info("Payment gateway integration coming soon!");
-    setIsProcessing(false);
+    try {
+      // Step 1: Create Razorpay order on backend
+      const orderRes = await createRazorpayOrder({
+        amount: payNowAmount,
+        currency: "INR",
+        booking_ids: bookingIds,
+        hoarding_id: hoarding.id,
+      });
+
+      if (!orderRes.data.successstatus) {
+        toast.error(orderRes.data.message || "Failed to create order");
+        setIsProcessing(false);
+        return;
+      }
+
+      const { order_id, key_id } = orderRes.data.data;
+
+      // Step 2: Open Razorpay checkout
+      const options = {
+        key: key_id,
+        amount: Math.round(payNowAmount * 100),
+        currency: "INR",
+        name: "ServerPe Advertising",
+        description: `Hoarding Booking - ${hoarding.hoarding_title}`,
+        order_id: order_id,
+        prefill: {
+          name: advertiser.name,
+          email: advertiser.email || "",
+          contact: advertiser.phoneNumber || "",
+        },
+        theme: {
+          color: "#4f46e5",
+        },
+        handler: async function (response) {
+          // Step 3: Verify payment on backend
+          try {
+            const verifyRes = await verifyRazorpayPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              booking_ids: bookingIds,
+              hoarding_id: hoarding.id,
+              amount: payNowAmount,
+            });
+
+            if (verifyRes.data.successstatus) {
+              toast.success("Payment successful!");
+              navigate("/advertiser/booking/payment-success", {
+                state: {
+                  paymentData: verifyRes.data.data,
+                  bookingReference,
+                  bookingData,
+                  advertiser,
+                  startDate,
+                  endDate,
+                  daysCount,
+                  totalPrice,
+                  payNowAmount,
+                  remainingAmount,
+                  totalWithGst,
+                  gstAmount,
+                },
+              });
+            } else {
+              toast.error(verifyRes.data.message || "Verification failed");
+            }
+          } catch (err) {
+            toast.error("Payment verification failed. Contact support.");
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setIsProcessing(false);
+            toast.info("Payment cancelled");
+          },
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.on("payment.failed", function (response) {
+        toast.error(
+          response.error.description || "Payment failed. Please try again.",
+        );
+        setIsProcessing(false);
+      });
+      rzp.open();
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Error initiating payment");
+      setIsProcessing(false);
+    }
+  };
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i = 0) => ({
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.1, duration: 0.45, ease: "easeOut" },
+    }),
   };
 
   return (
@@ -73,18 +178,29 @@ export default function CheckoutSummary() {
         </button>
 
         {/* Header */}
-        <div className="mb-8">
+        <motion.div
+          className="mb-8"
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+        >
           <h1 className="text-3xl font-bold text-gray-900">Order Summary</h1>
           <p className="text-gray-600 mt-2">
             Review your booking details and complete the payment
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Order Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Advertiser Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <div className="flex items-center gap-2 mb-4">
                 <HiOutlineUser className="w-5 h-5 text-primary-600" />
                 <h3 className="text-lg font-bold text-gray-900">
@@ -125,10 +241,16 @@ export default function CheckoutSummary() {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Hoarding Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <div className="flex items-center gap-2 mb-4">
                 <HiOutlineLocationMarker className="w-5 h-5 text-primary-600" />
                 <h3 className="text-lg font-bold text-gray-900">
@@ -177,10 +299,16 @@ export default function CheckoutSummary() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Booking Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <div className="flex items-center gap-2 mb-4">
                 <HiOutlineCalendar className="w-5 h-5 text-primary-600" />
                 <h3 className="text-lg font-bold text-gray-900">
@@ -212,12 +340,18 @@ export default function CheckoutSummary() {
                   <HiOutlineCheckCircle className="w-6 h-6 text-blue-600" />
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right: Payment Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm sticky top-6">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm sticky top-6"
+              custom={4}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <div className="flex items-center gap-2 mb-4">
                 <HiOutlineCreditCard className="w-5 h-5 text-primary-600" />
                 <h3 className="text-lg font-bold text-gray-900">
@@ -301,7 +435,7 @@ export default function CheckoutSummary() {
               >
                 Edit Booking
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

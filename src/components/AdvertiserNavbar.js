@@ -15,11 +15,12 @@ export default function AdvertiserNavbar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const advertiser = getStoredAdvertiserData();
 
-  const handleLogout = () => {
-    logoutAdvertiser();
+  const handleLogout = async () => {
+    await logoutAdvertiser();
     toast.success("Logged out successfully");
     setShowProfileMenu(false);
     navigate("/");
+    window.location.reload();
   };
 
   if (!advertiser) return null;

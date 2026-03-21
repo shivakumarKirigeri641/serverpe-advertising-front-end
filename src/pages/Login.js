@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { HiOutlinePhone, HiOutlineCheckCircle } from "react-icons/hi";
 import { toast } from "react-toastify";
 import {
@@ -7,6 +8,11 @@ import {
   verifyOtpAdvertiser,
   storeAdvertiserData,
 } from "../utils/authApi";
+
+const slideUp = {
+  hidden: { opacity: 0, y: 32 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+};
 
 export default function Login() {
   const navigate = useNavigate();
@@ -124,7 +130,12 @@ export default function Login() {
         )}
 
         {/* Card */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 animate-fade-in">
+        <motion.div
+          className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8"
+          variants={slideUp}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -292,7 +303,7 @@ export default function Login() {
               </a>
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Help text */}
         <div className="mt-6 text-center">

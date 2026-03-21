@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import {
   HiOutlineArrowLeft,
@@ -241,6 +242,7 @@ export default function Booking() {
         navigate("/advertiser/booking/checkout", {
           state: {
             bookingIds,
+            bookingReference: res.data.data.booking_reference,
             bookingData,
             advertiser,
             startDate,
@@ -301,6 +303,14 @@ export default function Booking() {
 
   const hoarding = bookingData;
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i = 0) => ({
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.1, duration: 0.45, ease: "easeOut" },
+    }),
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -317,7 +327,13 @@ export default function Booking() {
           {/* Left: Advertiser & Hoarding Details */}
           <div className="lg:col-span-2 space-y-6">
             {/* Advertiser Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              custom={0}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 Advertiser Details
               </h3>
@@ -355,10 +371,16 @@ export default function Booking() {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Hoarding Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 Hoarding Details
               </h3>
@@ -425,10 +447,16 @@ export default function Booking() {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Calendar Card */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <h3 className="text-lg font-bold text-gray-900 mb-6 flex items-center gap-2">
                 <HiOutlineCalendar className="w-5 h-5 text-primary-600" />
                 Select Booking Dates
@@ -509,12 +537,18 @@ export default function Booking() {
                   </p>
                 )}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right: Price Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm sticky top-24 space-y-4">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm sticky top-24 space-y-4"
+              custom={3}
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+            >
               <h3 className="text-lg font-bold text-gray-900">
                 Booking Summary
               </h3>
@@ -588,7 +622,7 @@ export default function Booking() {
               >
                 Change Hoarding
               </button>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

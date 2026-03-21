@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import {
   HiOutlineLogout,
@@ -11,6 +12,15 @@ import {
   HiOutlineBell,
 } from "react-icons/hi";
 import { getStoredAdvertiserData, logoutAdvertiser } from "../utils/authApi";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.08, duration: 0.4, ease: "easeOut" },
+  }),
+};
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -156,9 +166,13 @@ export default function Dashboard() {
                   icon: HiOutlineCreditCard,
                 },
                 { label: "Member Since", value: "Today", icon: HiOutlineUser },
-              ].map((stat) => (
-                <div
+              ].map((stat, i) => (
+                <motion.div
                   key={stat.label}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="visible"
                   className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-start justify-between mb-4">
@@ -170,12 +184,18 @@ export default function Dashboard() {
                   <p className="text-2xl font-bold text-gray-900">
                     {stat.value}
                   </p>
-                </div>
+                </motion.div>
               ))}
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+            <motion.div
+              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm"
+              variants={fadeUp}
+              custom={4}
+              initial="hidden"
+              animate="visible"
+            >
               <h2 className="text-lg font-bold text-gray-900 mb-4">
                 Quick Actions
               </h2>
@@ -207,10 +227,16 @@ export default function Dashboard() {
                   <HiOutlineArrowRight className="w-5 h-5 text-accent-600 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
-            </div>
+            </motion.div>
 
             {/* Empty State Message */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 text-center">
+            <motion.div
+              className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 text-center"
+              variants={fadeUp}
+              custom={5}
+              initial="hidden"
+              animate="visible"
+            >
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-200 rounded-full mb-4">
                 <HiOutlineCalendar className="w-8 h-8 text-blue-600" />
               </div>
@@ -227,7 +253,7 @@ export default function Dashboard() {
               >
                 Explore Hoardings
               </button>
-            </div>
+            </motion.div>
           </div>
         )}
 

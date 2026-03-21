@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { motion } from "framer-motion";
 import { HiOutlineFilter, HiOutlineSearch } from "react-icons/hi";
 import HoardingCard from "../components/HoardingCard";
 import { getHoardings } from "../utils/api";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.07, duration: 0.45, ease: "easeOut" },
+  }),
+};
 
 const LIMIT = 10;
 
@@ -87,14 +97,19 @@ export default function Hoardings() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header */}
-      <div className="mb-8">
+      <motion.div
+        className="mb-8"
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+      >
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900">
           Explore Hoardings
         </h1>
         <p className="text-gray-500 mt-2 text-lg">
           Browse premium billboard locations in Bangalore
         </p>
-      </div>
+      </motion.div>
 
       {/* Search + Filter toggle */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -160,8 +175,17 @@ export default function Hoardings() {
             {pagination.total !== 1 && "s"}
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((h) => (
-              <HoardingCard key={h.id} hoarding={h} />
+            {filtered.map((h, i) => (
+              <motion.div
+                key={h.id}
+                custom={i % 6}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <HoardingCard hoarding={h} />
+              </motion.div>
             ))}
           </div>
         </>

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import {
   HiOutlineLightBulb,
   HiOutlineCurrencyRupee,
@@ -6,6 +7,15 @@ import {
   HiOutlineMail,
   HiOutlinePhone,
 } from "react-icons/hi";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" },
+  }),
+};
 
 const values = [
   {
@@ -40,7 +50,12 @@ export default function About() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary-50 to-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            className="max-w-3xl mx-auto text-center"
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+          >
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
               I help businesses find the best advertising spaces easily and
               transparently
@@ -51,20 +66,31 @@ export default function About() {
               simple — make outdoor advertising accessible, transparent, and
               effective for businesses of every size.
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Values */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
+        <motion.div
+          className="text-center mb-14"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <h2 className="section-heading">What I Stand For</h2>
           <p className="section-sub">My core values guide everything I build</p>
-        </div>
+        </motion.div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {values.map((v) => (
-            <div
+          {values.map((v, i) => (
+            <motion.div
               key={v.title}
+              custom={i}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
               className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 flex gap-5"
             >
               <div className="flex-shrink-0 w-12 h-12 bg-primary-50 text-primary-600 rounded-xl flex items-center justify-center">
@@ -78,7 +104,7 @@ export default function About() {
                   {v.description}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
@@ -86,7 +112,13 @@ export default function About() {
       {/* Story */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto">
+          <motion.div
+            className="max-w-3xl mx-auto"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <h2 className="section-heading text-center mb-8">My Story</h2>
             <div className="prose prose-gray max-w-none text-gray-500 leading-relaxed space-y-4">
               <p>
@@ -108,13 +140,19 @@ export default function About() {
                 advertising in the city, and beyond.
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Founder */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="max-w-3xl mx-auto">
+        <motion.div
+          className="max-w-3xl mx-auto"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <h2 className="section-heading text-center mb-10">
             Meet the Founder
           </h2>
@@ -160,12 +198,18 @@ export default function About() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* CTA */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl p-10 md:p-14 text-center">
+        <motion.div
+          className="bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl p-10 md:p-14 text-center"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <h2 className="text-3xl font-extrabold text-white mb-4">
             Ready to advertise?
           </h2>
@@ -179,7 +223,7 @@ export default function About() {
           >
             Explore Hoardings &rarr;
           </a>
-        </div>
+        </motion.div>
       </section>
     </div>
   );

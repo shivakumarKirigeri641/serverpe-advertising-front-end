@@ -1,21 +1,42 @@
 import React from "react";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i = 0) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" },
+  }),
+};
 
 const Terms = () => {
   return (
     <div className="min-h-screen">
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary-50 to-white py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <motion.div
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+        >
           <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-4">
             Terms &amp; Conditions
           </h1>
           <p className="text-gray-500">Last updated: March 2026</p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Content */}
       <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+          variants={fadeUp}
+          custom={1}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <div className="prose prose-lg max-w-none text-gray-600">
             <h2 className="text-2xl font-bold text-gray-900 mt-8 mb-4">
               1. Acceptance of Terms
@@ -225,7 +246,7 @@ const Terms = () => {
               <li>Via WhatsApp: +91 79960 83415</li>
             </ul>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
   );

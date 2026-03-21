@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   HiOutlineLocationMarker,
   HiOutlineEye,
@@ -85,6 +86,14 @@ export default function HoardingDetails() {
   const pricePerDay = Number(hoarding?.price_per_day) || 0;
   const totalPrice = pricePerDay * days;
 
+  const fadeUp = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i = 0) => ({
+      opacity: 1, y: 0,
+      transition: { delay: i * 0.1, duration: 0.45, ease: "easeOut" },
+    }),
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Back */}
@@ -98,7 +107,13 @@ export default function HoardingDetails() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Left: Image & Details */}
-        <div className="lg:col-span-3 space-y-6">
+        <motion.div
+          className="lg:col-span-3 space-y-6"
+          variants={fadeUp}
+          custom={0}
+          initial="hidden"
+          animate="visible"
+        >
           {/* Image Gallery */}
           <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
             <img
@@ -262,10 +277,16 @@ export default function HoardingDetails() {
               </p>
             )}
           </div>
-        </div>
+        </motion.div>
 
         {/* Right: Booking Section */}
-        <div className="lg:col-span-2">
+        <motion.div
+          className="lg:col-span-2"
+          variants={fadeUp}
+          custom={1}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="sticky top-24 space-y-6">
             {/* Pricing Card */}
             <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
@@ -478,7 +499,7 @@ export default function HoardingDetails() {
               </Link>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

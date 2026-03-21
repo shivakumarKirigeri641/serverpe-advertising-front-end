@@ -20,6 +20,12 @@ export const getHoardingBookingDetails = (id) =>
 export const bookHoardingSlot = (bookingData) =>
   api.post(`/advertising/credentials/bookhoardingslot`, bookingData);
 
+// Payment endpoints
+export const createRazorpayOrder = (data) =>
+  api.post(`/advertising/credentials/payment/create-order`, data);
+export const verifyRazorpayPayment = (data) =>
+  api.post(`/advertising/credentials/payment/verify`, data);
+
 // Contact / general endpoints
 export const getQueryTypes = () => api.get("/advertising/campaigns/query-type");
 export const submitContactMe = (data) =>

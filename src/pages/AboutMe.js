@@ -48,7 +48,7 @@ const values = [
   {
     icon: <FiTarget size={22} />,
     title: "Direct Founder Contact",
-    desc: "No customer care queues. No middlemen. Talk directly to the person running this ads-on-movement portal.",
+    desc: "No customer care queues. No middlemen. Talk directly to Shivakumar (Software Engineer) or Amruta (Project Manager) — the people who built and run this platform.",
   },
   {
     icon: <FiGlobe size={22} />,
@@ -93,13 +93,13 @@ export default function AboutMe() {
               About ServerPe
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
-              The Story Behind{" "}
+              The Team Behind{" "}
               <span className="text-brand-400">
                 Bengaluru's Ads on Movement Platform
               </span>
             </h1>
             <p className="section-sub mt-5 max-w-3xl mx-auto">
-              A passionate technologist building bridges between local
+              Two passionate technologists building bridges between local
               businesses and affordable outdoor advertising — powered by
               technology, transparency, and honest personal commitment.
             </p>
@@ -151,65 +151,73 @@ export default function AboutMe() {
               className="space-y-5 text-gray-300 leading-relaxed"
             >
               <h2 className="section-heading text-left !text-3xl">
-                Who's Behind ServerPE™ Advertising?
+                The Team Behind ServerPE™ Advertising
               </h2>
               <p>
-                Hi! I'm{" "}
-                <span className="text-white font-semibold">
+                ServerPE™ Advertising is driven by two professionals who
+                together bring{" "}
+                <span className="text-brand-400 font-medium">
+                  13+ years of combined IT expertise
+                </span>{" "}
+                in full-stack development and project delivery — spanning both
+                desktop and web applications.
+              </p>
+
+              {/* Shivakumar */}
+              <div className="border-l-2 border-brand-500/40 pl-4">
+                <p className="text-white font-bold text-base">
                   Shivakumar Kirigeri
-                </span>
-                , an individual working in the IT industry with{" "}
-                <span className="text-brand-400 font-medium">
-                  13+ years of professional experience
-                </span>
-                . I initiated{" "}
-                <span className="text-white font-semibold">
-                  ServerPE™ Advertising
-                </span>{" "}
-                as a personal initiative to make{" "}
-                <span className="text-brand-400 font-medium">
-                  ads on movement
-                </span>{" "}
-                genuinely accessible and trackable for every small and medium
-                business in Bengaluru.
-              </p>
-              <p>
-                I started{" "}
-                <a
-                  href="https://serverpe.in"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-brand-400 hover:underline"
-                >
-                  serverpe.in
-                </a>{" "}
-                (the future home of this platform) with the vision of building
-                independent, useful tech portals. The advertising initiative
-                grew out of a clear gap I saw — businesses want to{" "}
-                <span className="text-white font-medium">
-                  advertise on the move
-                </span>{" "}
-                but lack an affordable, transparent, and technology-backed
-                option in Bengaluru.
-              </p>
-              <p>
-                I'm{" "}
+                  <span className="ml-2 text-xs font-medium text-brand-400 bg-brand-500/15 px-2 py-0.5 rounded-full">
+                    Software Engineer
+                  </span>
+                </p>
+                <p className="mt-1 text-sm">
+                  Full-stack software engineer with 13+ years of professional
+                  experience building scalable desktop and web applications.
+                  Shivakumar conceived and built{" "}
+                  <span className="text-white font-semibold">
+                    ServerPE™ Advertising
+                  </span>{" "}
+                  to close the gap in affordable, trackable outdoor advertising
+                  for SMBs across Bengaluru — backed by NFC, QR, and real-time
+                  notification technology.
+                </p>
+                <p className="flex items-center gap-2 text-sm mt-2">
+                  <FiPhone className="text-brand-400 shrink-0" size={14} />
+                  <a
+                    href="tel:+917996083415"
+                    className="text-white hover:text-brand-400 transition-colors font-medium"
+                  >
+                    +91 79960 83415
+                  </a>
+                </p>
+              </div>
+
+              {/* Amruta */}
+              <div className="border-l-2 border-brand-500/40 pl-4">
+                <p className="text-white font-bold text-base">
+                  Amruta Jegarkal
+                  <span className="ml-2 text-xs font-medium text-brand-400 bg-brand-500/15 px-2 py-0.5 rounded-full">
+                    Project Manager
+                  </span>
+                </p>
+                <p className="mt-1 text-sm">
+                  Project manager with 13+ years of professional experience
+                  overseeing full-stack software projects across desktop and web
+                  platforms. Amruta ensures that every campaign, partner
+                  onboarding, and delivery milestone runs with precision and
+                  complete transparency for advertisers.
+                </p>
+              </div>
+
+              <p className="text-sm text-gray-400">
+                Together, they are{" "}
                 <span className="text-white font-semibold">
                   not from any advertising agency
                 </span>
-                . I'm not competing with anyone. This is a simple, honest
-                individual initiative — road partners earn income, businesses
-                get outdoor visibility across the city, and the tracking tech
-                makes it all accountable via NFC &amp; QR codes.
-              </p>
-              <p className="flex items-center gap-2 text-sm">
-                <FiPhone className="text-brand-400 shrink-0" size={16} />
-                <a
-                  href="tel:+917996083415"
-                  className="text-white hover:text-brand-400 transition-colors font-medium"
-                >
-                  +91 79960 83415
-                </a>
+                . This is a personal, honest initiative — road partners earn
+                income, businesses gain city-wide outdoor visibility, and the
+                technology keeps everything accountable.
               </p>
             </motion.div>
           </motion.div>
@@ -236,7 +244,7 @@ export default function AboutMe() {
           >
             <MdAutoAwesome className="text-brand-400 text-4xl mx-auto mb-4" />
             <h2 className="text-2xl font-extrabold text-white mb-4">
-              My Mission — Affordable Outdoor Advertising for Every Business
+              Our Mission — Affordable Outdoor Advertising for Every Business
             </h2>
             <p className="text-gray-300 text-lg leading-relaxed max-w-2xl mx-auto">
               "To create a platform where on-wheel drivers earn meaningful
@@ -352,9 +360,12 @@ export default function AboutMe() {
                 of commuters daily across Bengaluru.
               </p>
               <p>
-                I handle everything personally — from onboarding road partners
-                to ad installation to tech support. If you have a question, you
-                aren't reaching a helpdesk. You're reaching me directly at{" "}
+                We handle everything personally — from onboarding road partners
+                to ad installation and tech support. If you have a question, you
+                aren't reaching a helpdesk — you're reaching{" "}
+                <span className="text-white font-semibold">Shivakumar</span> or{" "}
+                <span className="text-white font-semibold">Amruta</span>{" "}
+                directly at{" "}
                 <a
                   href="tel:+917996083415"
                   className="text-brand-400 hover:underline font-medium"
